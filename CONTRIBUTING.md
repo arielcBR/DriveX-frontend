@@ -10,20 +10,19 @@ Para evitar conflitos e garantir que a versão estável nunca seja quebrada, est
 
 - **main**: Contém apenas código estável e testado. É a versão de entrega para o professor.
 
-- **develop**: Nossa branch principal de integração. Todos os Pull Requests devem ser feitos para cá.
-
 - **feature/**: Use para novas funcionalidades (ex: feature/tela-login, feature/calculo-combustivel).
 
 - **fix/**: Use para correção de bugs (ex: fix/erro-data-corrida).
 
-- **docs/**: Use para atualizações de documentação ou diagramas do Astah.
+- **docs/**: Use para atualizações de documentação ou diagramas UML.
 
 ## 🔄 Fluxo de Desenvolvimento
 
-1. **Sincronize sua develop local:**
+1. **🔄 Sempre sincronizar a main: (Obrigatório)** 
    ```bash
-   git checkout develop
-   git pull origin develop
+   git checkout main
+   git fetch origin
+   git pull origin main
    ```
 
 2. **Crie sua sub-branch de trabalho:**
@@ -31,22 +30,45 @@ Para evitar conflitos e garantir que a versão estável nunca seja quebrada, est
    git checkout -b feature/nome-da-sua-tarefa
    ```
 
-3. **Realize seus Commits:**
+3. **💻 Desenvolver e commitar**
+   ```bash
+   git add .
+   git commit -m "mensagem commit"
+    ```
    - Tente usar mensagens claras (ex: feat: adiciona componente de gráfico de custos).
 
-4. **Abra um Pull Request (PR):**
-   - Suba sua branch para o GitHub: `git push origin feature/nome-da-sua-tarefa`.
+4. **🚀 Subir a branch**
+   ```bash
+   git push origin feature/nome-da-sua-tarefa
+    ```
+
+5. **Abra um Pull Request (PR):**
    - Abra o PR para a branch develop e peça para um colega revisar.
-
-## 📊 Padrões de Dados (Modelagem)
-
-Qualquer alteração na estrutura de dados deve respeitar o Diagrama de Classes localizado em `docs/class_diagram/`.
+  
+  **Observações gerais!**
 
 - **IDs**: Devem ser do tipo UUID.
 
 - **Valores**: Tratar como decimais/money no frontend para evitar erros de arredondamento.
 
 - **Datas**: Seguir o padrão LocalDateTime (ISO 8601 no frontend).
+
+***🧩 Organização de Componentes***
+- 📁 Componentes reutilizáveis (globais)
+Devem ser criados em:
+```bash
+   src/components/
+```
+Critério:
+👉 Componentes que são utilizados em duas ou mais telas.
+
+- 📁 Componentes específicos de tela
+Devem ser criados dentro da própria tela:
+```bash
+   src/app/nome-da-tela/components/
+```
+Critério:
+👉 Componentes que são usados apenas em uma única tela.
 
 ## 🛠️ Ambiente Local
 
