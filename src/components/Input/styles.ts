@@ -1,13 +1,34 @@
 import { StyleSheet } from "react-native";
+import { fonts, colors } from "@/constants/theme";
 
 export const styles = StyleSheet.create({
-    container: {
-        backgroundColor: "#FFF",
-        borderRadius: 8,
-        borderColor: "#C3C5CB",
-        borderWidth: 1,
-        paddingHorizontal: 16,
-        height: 48,
-        width: "100%"
+    content: {
+        flex: 1,
+        gap: 8,
     },
+    label: {
+        color: colors['blue--300'],
+        fontSize: 13,
+        textTransform: "capitalize"
+    },
+    inputWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        
+        backgroundColor: colors['blue--700'],
+        borderWidth: 1,
+        borderColor: colors['blue--600'],
+        borderRadius: 10,
+        padding: 8,
+    },
+    icon: {
+        color: colors['green--400'],
+        marginRight: 8,
+    },
+    input: {
+        flex: 1,
+        color:  colors['white'],
+        fontFamily: fonts['medium'],
+        fontSize: 16,
+    }
 });
