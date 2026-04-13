@@ -4,9 +4,8 @@ import { colors, fonts } from "@/constants/theme";
 export const styles = StyleSheet.create({
   content: {
     flex: 1,
-    gap: 20
-    // alignContent: "center",
-    // width: "100%"
+    gap: 24,
+    marginBottom: 16,
   },
   form:{
     gap: 16,
