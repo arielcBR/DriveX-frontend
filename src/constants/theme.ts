@@ -14,6 +14,7 @@ export const colors = {
   "blue--200": "#4695DC",
   "blue--300": "#5A7FA0",
   "blue--500": "#2A4A6A",
+  "blue--600": "#1E3A5F",
   "blue--700": "#102840",
   "blue--900": "#0D1B2A",
 
@@ -27,4 +28,10 @@ export const fonts = {
   regular: "Roboto_400Regular",
   medium: "Roboto_500Medium",
   bold: "Roboto_700Bold",
+};
+
+export const sizes = {
+    icon_logo: 52,
+    icon_medium: 24,
+    icon_small: 16,
 };
