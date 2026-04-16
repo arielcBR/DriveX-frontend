@@ -30,9 +30,6 @@ export function RegisterVehicle(){
                         <Input  labelText="Placa" placeholder="ABC1D26" iconName="credit-card" />
                         <Input  labelText="Km inicial" placeholder="25000" iconName="speed" />
                     </View>
-                    <View style={styles.containerWrapper}>
-                        <Input  labelText="RENAVAM" placeholder="00000000000 (11dígitos)" iconName="local-offer" />
-                    </View>
                 </View>
                 <Button variant='primary' title="Cadastrar"/>
             </View>
