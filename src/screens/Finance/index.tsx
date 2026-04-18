@@ -1,30 +1,15 @@
 import { Container } from "@/components/Container";
 import { styles } from "./styles";
 import { View } from "react-native";
-import { StatCard } from "./components/StatCard";
-import { Button } from "@/components/Button";
+import { TransactionOverview } from "./components/TransactionOverview";
+import { FinancialSummaryCard } from "./components/FinancialSummaryCard";
 
 export function Finance(){
     return(
         <Container>
             <View style={styles.content}>
-                <View style={styles.statCardsWrapper}>
-                    <View style={styles.column}>
-                        <StatCard type="income" amountOfCash={1000} amountOfTransactions={5}/>
-                        <Button 
-                            textStyle={styles.buttonText}
-                            title="+ Entrada" 
-                        />
-                    </View>
-                    <View style={styles.column}>
-                        <StatCard type="outcome" amountOfCash={500} amountOfTransactions={5}/>
-                        <Button 
-                            textStyle={styles.buttonText}
-                            title="- Saída" 
-                            variant="danger"
-                        />
-                    </View>
-                </View>
+                <FinancialSummaryCard value={1500.56} period="semana"/>
+                <TransactionOverview />
             </View>
         </Container>
     );
