@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     text: {
         fontFamily: fonts.bold,
         fontSize: 14,
-        fontWeight: 600,
+        fontWeight: "bold",
     }, 
     primary: {
         color: colors['blue--900'],
