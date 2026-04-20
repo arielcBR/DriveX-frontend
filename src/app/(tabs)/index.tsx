@@ -1,6 +1,5 @@
-// Esse arquivo é apenas uma "casca"
-import { Home } from "@/screens/Home"; 
+import Profile from "../../screens/Profile";
 
 export default function HomeRoute() {
-  return <Home />;
+  return <Profile />;
 }
