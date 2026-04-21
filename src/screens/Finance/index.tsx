@@ -1,6 +1,6 @@
 import { Container } from "@/components/Container";
-import { styles } from "./styles";
 import { Text, View } from "react-native";
+import { styles } from "./styles";
 
 export function Finance(){
     return(

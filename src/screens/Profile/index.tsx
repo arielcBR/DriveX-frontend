@@ -1,6 +1,7 @@
 import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { colors } from "@/constants/theme";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import { Switch, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
@@ -13,7 +14,11 @@ export default function Profile() {
     <Container>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Perfil</Text>
-        <TouchableOpacity activeOpacity={0.8}>
+        
+        <TouchableOpacity 
+          activeOpacity={0.8}
+          onPress={() => router.push('/edit-profile')}
+        >
           <Text style={styles.editButton}>Editar</Text>
         </TouchableOpacity>
       </View>
