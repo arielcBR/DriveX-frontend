@@ -1,9 +1,9 @@
-import { Container } from "@/components/Container";
-import { Logo } from "@/components/Logo";
-import { styles } from "./styles";
-import { View, Text } from "react-native";
-import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
+import { Container } from "@/components/Container";
+import { Input } from "@/components/Input";
+import { Logo } from "@/components/Logo";
+import { Text, View } from "react-native";
+import { styles } from "./styles";
 
 
 export function RegisterVehicle(){
@@ -31,7 +31,7 @@ export function RegisterVehicle(){
                         <Input  labelText="Km inicial" placeholder="25000" iconName="speed" />
                     </View>
                 </View>
-                <Button variant='primary' title="Cadastrar"/>
+                <Button variant="primary" title="Cadastrar"/>
             </View>
         </Container>
     );
