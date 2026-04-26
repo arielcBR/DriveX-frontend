@@ -1,12 +1,13 @@
 import { Container } from "@/components/Container";
 import { styles } from "./styles";
 import { View } from "react-native";
-import { TransactionOverview } from "./components/TransactionOverview";
 import { FinancialSummaryCard } from "./components/FinancialSummaryCard";
 import { ProgressGroup } from "@/components/ProgressGroup"
+import { TransactionOverview } from "./components/TransactionOverview";
 import { WeeklyRevenueChart } from "@/components/WeeklyRevenueChart";
 import { CategoryExpensesSection } from "@/components/CategoryExpensesSection";
 import { Alert } from "@/components/AlertCard";
+import { Transaction, RecentTransactions } from "@/components/RecentTransactions";
 
 export function Finance(){
 
@@ -31,6 +32,37 @@ export function Finance(){
           iconName: "description", iconBgColor: "#F3F4F6", variant: "white" 
         },
       ];
+
+      const transactions: Transaction[] = [
+        {
+          id: '1',
+          description: 'Corrida - Zona Sul',
+          date: 'Hoje, 14:32',
+          amount: 15.85,
+          type: 'income',
+          iconName: 'check',
+          iconColor: '#A3E635'
+        },
+        {
+          id: '2',
+          description: 'Abastecimento',
+          date: 'Hoje, 09:07',
+          amount: 85.00,
+          type: 'outcome',
+          iconName: 'local-gas-station',
+          iconColor: '#EF4444'
+        },
+        {
+          id: '3',
+          description: 'Corrida - Centro',
+          date: 'Hoje, 07:07',
+          amount: 28.85,
+          type: 'income',
+          iconName: 'check',
+          iconColor: '#A3E635'
+        }
+      ];
+      
 
     return(
         <Container>
@@ -57,6 +89,7 @@ export function Finance(){
                         { id: "2", label: "Pagamento a vencer", value: "R$ 200,00", status: "warning" }
                     ]}
                 />
+                <RecentTransactions data={transactions} onViewAll={() => console.log('Ver tudo')} />
             </View>
         </Container>
     );
