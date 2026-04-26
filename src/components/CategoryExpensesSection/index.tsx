@@ -1,7 +1,7 @@
-import { useRouter } from 'expo-router';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { CategoryExpenseItem } from './components/CategoryExpenseItem';
-import { styles } from './styles';
+import { useRouter } from "expo-router";
+import { Text, TouchableOpacity, View } from "react-native";
+import { CategoryExpenseItem } from "./components/CategoryExpenseItem";
+import { styles } from "./styles";
 
 interface CategoryData {
   id: string;
@@ -21,7 +21,7 @@ export function CategoryExpensesSection({ data }: Props) {
   const router = useRouter();
 
   function handlePressViewAll() {
-    router.push('/expenses');
+    router.push("/expenses");
   }
 
   return (

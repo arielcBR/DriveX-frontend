@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { ProgressBar } from '../ProgressBar';
-import { styles } from './styles';
+import React from "react";
+import { Text, View } from "react-native";
+import { ProgressBar } from "../ProgressBar";
+import { styles } from "./styles";
 
 interface SummaryGoalCardProps {
   currentValue: number;

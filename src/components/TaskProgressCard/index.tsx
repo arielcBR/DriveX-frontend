@@ -1,9 +1,9 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from "@/constants/theme";
-import { ProgressBar, ProgressVariant } from '../ProgressBar';
-import { styles } from './styles';
+import { MaterialIcons } from "@expo/vector-icons";
+import React from "react";
+import { Text, View } from "react-native";
+import { ProgressBar, ProgressVariant } from "../ProgressBar";
+import { styles } from "./styles";
 
 interface TaskProgressCardProps {
   title: string;
@@ -12,8 +12,8 @@ interface TaskProgressCardProps {
   maxValue: number;
   unit: string; // Ex: "corridas", "km", "R$"
   variant: ProgressVariant;
-  iconName: React.ComponentProps<typeof MaterialIcons>['name'];
-  status: 'em andamento' | 'concluída' | 'atenção';
+  iconName: React.ComponentProps<typeof MaterialIcons>["name"];
+  status: "em andamento" | "concluída" | "atenção";
 }
 
 export function TaskProgressCard({ 
@@ -29,9 +29,9 @@ export function TaskProgressCard({
   
   // Cores do Badge de Status
   const statusColors = {
-    'em andamento': colors['green--300'],
-    'concluída': colors['green--500'],
-    'atenção': colors['red--400'],
+    "em andamento": colors["green--300"],
+    "concluída": colors["green--500"],
+    "atenção": colors["red--400"],
   };
 
   // Formatação da label da barra (ex: "40 de 50 corridas feitas")
@@ -43,7 +43,7 @@ export function TaskProgressCard({
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.leftInfo}>
-          <MaterialIcons name={iconName} size={24} color={colors[variant === 'success' ? 'green--300' : 'blue--200']} />
+          <MaterialIcons name={iconName} size={24} color={colors[variant === "success" ? "green--300" : "blue--200"]} />
           <View style={styles.textGroup}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.subTitle}>{subTitle}</Text>

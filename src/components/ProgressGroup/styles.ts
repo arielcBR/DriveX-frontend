@@ -1,15 +1,15 @@
-import { StyleSheet } from 'react-native';
 import { colors, fonts } from "@/constants/theme";
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
     content: {
-      width: '100%',
+      width: "100%",
       marginVertical: 12,
     },
     textRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
       marginBottom: 8, 
     },
     label: {

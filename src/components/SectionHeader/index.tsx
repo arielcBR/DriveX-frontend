@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from "@/constants/theme";
-import { styles } from './styles';
+import { MaterialIcons } from "@expo/vector-icons";
+import React from "react";
+import { Text, View } from "react-native";
+import { styles } from "./styles";
 
 interface SectionHeaderProps {
   title: string;

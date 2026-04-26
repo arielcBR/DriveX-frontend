@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { VerticalProgressBar } from './components/VerticalProgressBar';
-import { styles } from './styles';
+import React from "react";
+import { Text, View } from "react-native";
+import { VerticalProgressBar } from "./components/VerticalProgressBar";
+import { styles } from "./styles";
 
 interface WeeklyData {
   label: string; 
@@ -19,15 +19,15 @@ interface WeeklyRevenueChartProps {
 export function WeeklyRevenueChart({ title, period, data }: WeeklyRevenueChartProps) {
   
   const formatPeriod = (date: Date) => {
-    const formatter = new Intl.DateTimeFormat('pt-BR', { 
-      month: 'long', 
-      year: 'numeric' 
+    const formatter = new Intl.DateTimeFormat("pt-BR", { 
+      month: "long", 
+      year: "numeric" 
     });
     
     const formatted = formatter.format(date);
     
     return formatted
-      .replace(' de ', ' ')
+      .replace(" de ", " ")
       .replace(/^\w/, (c) => c.toUpperCase());
   };
 

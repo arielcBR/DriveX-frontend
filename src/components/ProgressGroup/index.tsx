@@ -1,6 +1,6 @@
-import { View, Text } from 'react-native';
-import { ProgressBar, ProgressVariant } from '../ProgressBar';
 import { colors } from "@/constants/theme";
+import { Text, View } from "react-native";
+import { ProgressBar, ProgressVariant } from "../ProgressBar";
 import { styles } from "./styles";
 
 interface ProgressGroupProps {
@@ -15,11 +15,11 @@ export function ProgressGroup({ label, currentValue, maxValue, variant }: Progre
   const percentage = Math.min(Math.max((currentValue / maxValue) * 100, 0), 100);
 
   const variantColorMap = {
-    success: colors['green--500'],
-    info: colors['blue--200'],
-    danger: colors['red--400'],
-    warning: colors['orange--500'],
-    purple: colors['purple--400'],
+    success: colors["green--500"],
+    info: colors["blue--200"],
+    danger: colors["red--400"],
+    warning: colors["orange--500"],
+    purple: colors["purple--400"],
   };
 
   return (

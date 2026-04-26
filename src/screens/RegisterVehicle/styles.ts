@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
 import { colors, fonts } from "@/constants/theme";
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   content: {
@@ -17,14 +17,14 @@ export const styles = StyleSheet.create({
     marginBottom: 16
   },
   subtitle: {
-    color: colors['blue--300'],
+    color: colors["blue--300"],
     fontFamily: fonts.bold,
     fontSize: 13,
     textTransform: "uppercase",
   },
   containerWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     gap: 18,
   }
 });

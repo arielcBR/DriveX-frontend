@@ -6,6 +6,7 @@ import { FinancialSummaryCard } from "./components/FinancialSummaryCard";
 import { ProgressGroup } from "@/components/ProgressGroup"
 import { WeeklyRevenueChart } from "@/components/WeeklyRevenueChart";
 import { CategoryExpensesSection } from "@/components/CategoryExpensesSection";
+import { Alert } from "@/components/AlertCard";
 
 export function Finance(){
 
@@ -18,16 +19,16 @@ export function Finance(){
 
     const categories = [
         { 
-          id: '1', label: 'Combustível', amount: 280, maxValue: 500, 
-          iconName: 'local-gas-station', iconBgColor: '#B45309', variant: 'warning' 
+          id: "1", label: "Combustível", amount: 280, maxValue: 500, 
+          iconName: "local-gas-station", iconBgColor: "#B45309", variant: "warning" 
         },
         { 
-          id: '2', label: 'Manutenção', amount: 200, maxValue: 800, 
-          iconName: 'directions-car', iconBgColor: '#1E3A8A', variant: 'info' 
+          id: "2", label: "Manutenção", amount: 200, maxValue: 800, 
+          iconName: "directions-car", iconBgColor: "#1E3A8A", variant: "info" 
         },
         { 
-          id: '3', label: 'IPVA/ Licen.', amount: 300, maxValue: 1000, 
-          iconName: 'description', iconBgColor: '#F3F4F6', variant: 'white' // adicione 'white' no seu theme se necessário
+          id: "3", label: "IPVA/ Licen.", amount: 300, maxValue: 1000, 
+          iconName: "description", iconBgColor: "#F3F4F6", variant: "white" 
         },
       ];
 
@@ -48,6 +49,14 @@ export function Finance(){
                     data={weeklyRevenueData}
                 />
                 <CategoryExpensesSection data={categories} />
+                <Alert
+                    title="Alertas"
+                    iconName="warning"
+                    data={[
+                        { id: "1", label: "Pagamento vencido", value: "R$ 150,00", status: "danger" },
+                        { id: "2", label: "Pagamento a vencer", value: "R$ 200,00", status: "warning" }
+                    ]}
+                />
             </View>
         </Container>
     );

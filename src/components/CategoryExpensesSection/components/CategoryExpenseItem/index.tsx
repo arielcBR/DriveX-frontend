@@ -1,15 +1,15 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 import { ProgressBar, ProgressVariant } from "@/components/ProgressBar";
-import { styles } from './styles';
+import { MaterialIcons } from "@expo/vector-icons";
+import React from "react";
+import { Text, View } from "react-native";
+import { styles } from "./styles";
 
 interface CategoryExpenseItemProps {
   label: string;
   amount: number;
   currentValue: number;
   maxValue: number;
-  iconName: React.ComponentProps<typeof MaterialIcons>['name'];
+  iconName: React.ComponentProps<typeof MaterialIcons>["name"];
   iconBgColor: string; 
   variant: ProgressVariant;
 }
