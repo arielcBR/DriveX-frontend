@@ -5,6 +5,7 @@ import { TransactionOverview } from "./components/TransactionOverview";
 import { FinancialSummaryCard } from "./components/FinancialSummaryCard";
 import { ProgressGroup } from "@/components/ProgressGroup"
 import { WeeklyRevenueChart } from "@/components/WeeklyRevenueChart";
+import { CategoryExpensesSection } from "@/components/CategoryExpensesSection";
 
 export function Finance(){
 
@@ -14,6 +15,21 @@ export function Finance(){
         { label: "S3", value: 1000, max: 1000, isActive: true }, 
         { label: "S4", value: 380, max: 1000 },
     ];
+
+    const categories = [
+        { 
+          id: '1', label: 'Combustível', amount: 280, maxValue: 500, 
+          iconName: 'local-gas-station', iconBgColor: '#B45309', variant: 'warning' 
+        },
+        { 
+          id: '2', label: 'Manutenção', amount: 200, maxValue: 800, 
+          iconName: 'directions-car', iconBgColor: '#1E3A8A', variant: 'info' 
+        },
+        { 
+          id: '3', label: 'IPVA/ Licen.', amount: 300, maxValue: 1000, 
+          iconName: 'description', iconBgColor: '#F3F4F6', variant: 'white' // adicione 'white' no seu theme se necessário
+        },
+      ];
 
     return(
         <Container>
@@ -31,6 +47,7 @@ export function Finance(){
                     period={new Date(2024, 3)} 
                     data={weeklyRevenueData}
                 />
+                <CategoryExpensesSection data={categories} />
             </View>
         </Container>
     );
