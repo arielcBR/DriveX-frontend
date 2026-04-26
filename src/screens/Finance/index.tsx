@@ -8,8 +8,35 @@ import { WeeklyRevenueChart } from "@/components/WeeklyRevenueChart";
 import { CategoryExpensesSection } from "@/components/CategoryExpensesSection";
 import { Alert } from "@/components/AlertCard";
 import { Transaction, RecentTransactions } from "@/components/RecentTransactions";
+import { FilterType, FinanceHeader } from "@/components/FinanceHeader";
+import { useState } from "react";
 
 export function Finance(){
+
+    const [filter, setFilter] = useState<FilterType>('Hoje');
+
+    const dataMock = {
+        'Hoje': {
+            income: { cash: 215.80, transactions: 3 },
+            outcome: { cash: 85.00, transactions: 1 },
+            meta: 300,
+            currentMeta: 215.80
+        },
+        'Semana': {
+            income: { cash: 1540.00, transactions: 24 },
+            outcome: { cash: 620.00, transactions: 8 },
+            meta: 1500,
+            currentMeta: 1540
+        },
+        'Mês': {
+            income: { cash: 5234.80, transactions: 89 },
+            outcome: { cash: 3100.00, transactions: 34 },
+            meta: 3000,
+            currentMeta: 2134.80
+        }
+    };
+
+    const displayData = dataMock[filter];
 
     const weeklyRevenueData = [
         { label: "S1", value: 450, max: 1000 },
@@ -62,19 +89,27 @@ export function Finance(){
           iconColor: '#A3E635'
         }
       ];
-      
 
     return(
         <Container>
             <View style={styles.content}>
-                <FinancialSummaryCard value={1500.56} period="semana"/>
+            <FinanceHeader selectedFilter={filter} onFilterChange={setFilter} />
+                <FinancialSummaryCard 
+                    value={displayData.income.cash - displayData.outcome.cash} 
+                    period={filter} 
+                />
                 <ProgressGroup 
-                    label="Meta: R$ 3.000"
-                    currentValue={2134.80} 
-                    maxValue={3000} 
+                    label={`Meta: R$ ${displayData.meta.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+                    currentValue={displayData.currentMeta} 
+                    maxValue={displayData.meta} 
                     variant="info"
                 />
-                <TransactionOverview />
+                <TransactionOverview 
+                    income={displayData.income}
+                    outcome={displayData.outcome}
+                    onAddIncome={() => {}}
+                    onAddOutcome={() => {}}
+                />
                 <WeeklyRevenueChart 
                     title="Receita semanal"
                     period={new Date(2024, 3)} 

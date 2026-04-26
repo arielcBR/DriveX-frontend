@@ -1,23 +1,22 @@
 import { Text, View } from "react-native";
-import { styles  } from "./styles";
+import { styles } from "./styles";
 import { MoneyText } from "../MoneyText";
-
-type Period = "dia" | "semana" | "mês";
+import { FilterType } from "@/components/FinanceHeader";
 
 interface FinancialSummaryCardProps {
    value: number;
-   period?: Period;
+   period?: FilterType;
 }
 
 export function FinancialSummaryCard({
    value,
-   period = "mês"
+   period = "Mês" 
 }: FinancialSummaryCardProps) {
 
    const periodLabel = {
-      dia: "do dia",
-      semana: "da semana",
-      mês: "do mês"
+      "Hoje": "do dia",
+      "Semana": "da semana",
+      "Mês": "do mês"
    };
 
    return (
