@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { Switch, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
 
-export default function Profile() {
+export function Profile() {
   const [alertVencimento, setAlertVencimento] = useState(true);
   const [manutencaoKm, setManutencaoKm] = useState(false);
 

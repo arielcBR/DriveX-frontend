@@ -1,5 +1,5 @@
-import Profile from "../../screens/Profile";
+import { Home } from "@/screens/Home"
 
 export default function HomeRoute() {
-  return <Profile />;
+  return <Home />;
 }
