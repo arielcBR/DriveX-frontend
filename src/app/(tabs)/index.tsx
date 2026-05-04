@@ -1,5 +1,5 @@
-import Profile from "../../screens/Profile";
+import Goals from "@/screens/Goals";
 
 export default function HomeRoute() {
-  return <Profile />;
+  return <Goals />;
 }
