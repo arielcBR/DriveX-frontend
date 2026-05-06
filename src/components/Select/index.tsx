@@ -1,10 +1,19 @@
 import { sizes } from "@/constants/theme";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import React, { ComponentProps, useState } from "react";
+import React, { ComponentProps, memo, useCallback, useState } from "react";
 import { FlatList, Modal, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
 
 type MaterialIconName = ComponentProps<typeof MaterialIcons>["name"];
+
+const OptionItem = memo(({ item, onPress }: { item: string; onPress: (val: string) => void }) => (
+  <TouchableOpacity 
+    style={styles.optionItem}
+    onPress={() => onPress(item)}
+  >
+    <Text style={styles.optionText}>{item}</Text>
+  </TouchableOpacity>
+));
 
 interface Props {
   labelText: string;
@@ -34,6 +43,15 @@ export function Select({ labelText, iconName, placeholder, value, options, onSel
   const handleClose = () => {
     setModalVisible(false);
   };
+
+  const handleSelectOption = useCallback((item: string) => {
+    onSelect(item);
+    setModalVisible(false);
+  }, [onSelect]);
+
+  const renderItem = useCallback(({ item }: { item: string }) => (
+    <OptionItem item={item} onPress={handleSelectOption} />
+  ), [handleSelectOption]);
 
   return (
     <View style={styles.content}>
@@ -89,20 +107,14 @@ export function Select({ labelText, iconName, placeholder, value, options, onSel
             <FlatList 
               data={filteredOptions}
               keyExtractor={(item) => item}
-              renderItem={({ item }) => (
-                <TouchableOpacity 
-                  style={styles.optionItem}
-                  onPress={() => {
-                    onSelect(item);
-                    handleClose();
-                  }}
-                >
-                  <Text style={styles.optionText}>{item}</Text>
-                </TouchableOpacity>
-              )}
+              renderItem={renderItem}
               ItemSeparatorComponent={() => <View style={styles.separator} />}
               ListEmptyComponent={<Text style={styles.emptyText}>Nenhuma opção encontrada</Text>}
               keyboardShouldPersistTaps="handled"
+              initialNumToRender={15}
+              maxToRenderPerBatch={10}
+              windowSize={5}
+              removeClippedSubviews={true}
             />
           </TouchableOpacity>
         </TouchableOpacity>
