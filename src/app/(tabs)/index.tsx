@@ -1,5 +1,5 @@
-import { Login } from "@/screens/SingUp";
+import { Home } from "@/screens/Home";
 
 export default function HomeRoute() {
-  return <Login />;
+  return <Home />;
 }
