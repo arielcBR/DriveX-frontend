@@ -5,10 +5,14 @@ import { Logo } from "@/components/Logo";
 import { Select } from "@/components/Select";
 import { FipeApi, FipeItem, VehicleType } from "@/utils/FipeApi";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Text, View, Alert } from "react-native";
 import { styles } from "./styles";
+import { useRegisterVehicle } from "@/hooks/useRegisterVehicle";
+// import { useAuth } from "@/contexts/AuthContext";
 
 export function RegisterVehicle() {
+    // const { user } = useAuth();
+    
     const [vehicleTypeStr, setVehicleTypeStr] = useState<string>("Carro");
     const vehicleType: VehicleType = vehicleTypeStr === "Moto" ? "motorcycles" : "cars";
 
@@ -23,6 +27,13 @@ export function RegisterVehicle() {
     const [loadingBrands, setLoadingBrands] = useState(false);
     const [loadingModels, setLoadingModels] = useState(false);
     const [loadingVersions, setLoadingVersions] = useState(false);
+
+    const [color, setColor] = useState("");
+    const [licensePlate, setLicensePlate] = useState("");
+    const [initialKm, setInitialKm] = useState("");
+
+    const { register, loading: isRegistering } = useRegisterVehicle();
+
 
     useEffect(() => {
         const fetchBrands = async () => {
@@ -97,6 +108,34 @@ export function RegisterVehicle() {
         }
     };
 
+    const handleSubmit = async () => {
+        if (!brand || !model || !version || !color || !licensePlate || !initialKm) {
+            Alert.alert("Atenção", "Por favor, preencha todos os campos do veículo.");
+            return;
+        }
+
+        const extractedYear = parseInt(version.name.split(" ")[0]) || new Date().getFullYear();
+
+        const payload = {
+            marca: brand.name,
+            modelo: model.name,
+            placa: licensePlate,
+            tipo: vehicleTypeStr.toLowerCase(),
+            ano: extractedYear,
+            cor: color,
+            kmAtual: parseInt(initialKm),
+            idUsuario: 5 
+        };
+
+        const result = await register(payload);
+
+        if (result.success) {
+            Alert.alert("Sucesso", "Veículo cadastrado com sucesso!");
+        } else {
+            Alert.alert("Erro", result.error); 
+        }
+    };
+
     return (
         <Container>
             <View style={styles.content}>
@@ -146,16 +185,41 @@ export function RegisterVehicle() {
                     </View>
 
                     <View style={styles.containerWrapper}>
-                        <Input labelText="Cor" placeholder="Prata" iconName="palette" />
-                        <Input labelText="Placa" placeholder="ABC1D26" iconName="credit-card" />
+                        <Input 
+                            labelText="Cor" 
+                            placeholder="Prata" 
+                            iconName="palette" 
+                            value={color}
+                            onChangeText={setColor}
+                        />
+                        <Input 
+                            labelText="Placa" 
+                            placeholder="ABC1D26" 
+                            iconName="credit-card" 
+                            value={licensePlate}
+                            onChangeText={setLicensePlate}
+                            autoCapitalize="characters"
+                        />
                     </View>
 
                     <Text style={styles.subtitle}>Detalhes</Text>
                     <View style={styles.containerWrapper}>
-                        <Input labelText="Km inicial" placeholder="25000" iconName="speed" />
+                        <Input 
+                            labelText="Km inicial" 
+                            placeholder="25000" 
+                            iconName="speed" 
+                            value={initialKm}
+                            onChangeText={setInitialKm}
+                            keyboardType="numeric"
+                        />
                     </View>
                 </View>
-                <Button variant="primary" title="Cadastrar" />
+                <Button 
+                    variant="primary" 
+                    title={isRegistering ? "Cadastrando..." : "Cadastrar"} 
+                    onPress={handleSubmit}
+                    disabled={isRegistering}
+                />
             </View>
         </Container>
     );
