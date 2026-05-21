@@ -2,17 +2,9 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { router } from "expo-router";
-
+import { HeaderProps } from "./types";
 import { colors, sizes } from "@/constants/theme";
 import { styles } from "./styles";
-export interface UserProps {
-  initials: string;
-  name: string;
-}
-
-interface HeaderProps {
-  initials: UserProps["initials"];
-}
 
 export function Header({ initials }: HeaderProps) {
   return (

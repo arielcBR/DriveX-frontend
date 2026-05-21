@@ -1,52 +1,122 @@
-import React from "react";
-import { Text, View, StyleProp, ViewStyle, TextStyle } from "react-native";
+import React, { useEffect, useState, useRef } from "react";
+import { Text, View, FlatList, ViewToken } from "react-native";
+import { styles, SLIDER_WIDTH } from "./styles";
+import { ProcessedAlert, AlertsCardProps } from "./types";
+import { AlertSlide } from "./components/AlertSlide";
 
-import { styles } from "./styles";
-export interface AlertProps {
-  id: string;
-  title: string;
-  badgeText: string;
-  badgeColor: string;
-  dotColor: string;
-}
+const chunkArray = (arr: ProcessedAlert[], size: number) => {
+  return Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+    arr.slice(i * size, i * size + size)
+  );
+};
 
-interface AlertsCardProps {
-  alerts: AlertProps[];
-}
+export function AlertsCard({ alertsData }: AlertsCardProps) {
+  const [slides, setSlides] = useState<ProcessedAlert[][]>([]);
+  
+  const [activeIndex, setActiveIndex] = useState(0);
 
-export function AlertsCard({ alerts }: AlertsCardProps) {
-  const getDotStyle = (color: string): StyleProp<ViewStyle> => {
-    return [styles.alertDot, { backgroundColor: color }];
+  useEffect(() => {
+    if (alertsData && alertsData.length > 0) {
+      const processedData = processAlerts(alertsData);
+      
+      processedData.sort((a, b) => {
+        if (!a.dueDate) return 1;
+        if (!b.dueDate) return -1;
+        return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+      });
+
+      setSlides(chunkArray(processedData, 3));
+    }
+  }, [alertsData]);
+
+  const processAlerts = (data: any[]): ProcessedAlert[] => {
+    const today = new Date();
+
+    return data.map(item => {
+      let daysRemaining = null;
+      let statusText = "";
+      let urgency: 'high' | 'medium' | 'low' = 'low';
+
+      const dueDateString = item.dataVencimento || item.dueDate;
+
+      if (dueDateString) {
+        const dueDate = new Date(dueDateString);
+        const diffTime = dueDate.getTime() - today.getTime();
+        daysRemaining = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (daysRemaining < 0) {
+          statusText = "Pendente";
+          urgency = "high";
+        } else if (daysRemaining === 0) {
+          statusText = "Vence hoje";
+          urgency = "high";
+        } else if (daysRemaining <= 5) {
+          statusText = `Vence em ${daysRemaining} dias`;
+          urgency = "high";
+        } else {
+          statusText = `Vence em ${daysRemaining} dias`;
+          urgency = "medium";
+        }
+      }
+
+      return { 
+        costId: item.idCusto || item.costId, 
+        description: item.descricao || item.description,
+        amount: item.valor || item.amount,
+        type: item.tipo || item.type,
+        dueDate: dueDateString,
+        daysRemaining, 
+        statusText, 
+        urgency 
+      };
+    });
   };
 
-  const getBadgeStyle = (color: string): StyleProp<ViewStyle> => {
-    return [styles.alertBadge, { backgroundColor: color + "20" }];
-  };
+  const onViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[] }) => {
+    if (viewableItems.length > 0 && viewableItems[0].index !== null) {
+      setActiveIndex(viewableItems[0].index);
+    }
+  }).current;
 
-  const getBadgeTextStyle = (color: string): StyleProp<TextStyle> => {
-    return [styles.alertBadgeText, { color: color }];
-  };
+  
+  const viewabilityConfig = useRef({
+    itemVisiblePercentThreshold: 50,
+  }).current;
+
+  if (!slides || slides.length === 0) return null;
 
   return (
     <View style={styles.alertsCard}>
       <Text style={styles.alertsTitle}>Alertas de vencimento</Text>
-      {alerts.map((alert) => {
-        const dotStyle = getDotStyle(alert.dotColor);
-        const badgeStyle = getBadgeStyle(alert.badgeColor);
-        const badgeTextStyle = getBadgeTextStyle(alert.badgeColor);
+      <FlatList
+        data={slides}
+        keyExtractor={(_, index) => `slide-${index}`}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        pagingEnabled
+        snapToAlignment="start"
+        decelerationRate="fast"
+        snapToInterval={SLIDER_WIDTH} 
+        renderItem={({ item }) => <AlertSlide alerts={item} />}
+        onViewableItemsChanged={onViewableItemsChanged}
+        viewabilityConfig={viewabilityConfig}
+      />
 
-        return (
-          <View key={alert.id} style={styles.alertItem}>
-            <View style={styles.alertLeft}>
-              <View style={dotStyle} />
-              <Text style={styles.alertItemTitle}>{alert.title}</Text>
-            </View>
-            <View style={badgeStyle}>
-              <Text style={badgeTextStyle}>{alert.badgeText}</Text>
-            </View>
-          </View>
-        );
-      })}
+      {slides.length > 1 && (
+        <View style={styles.paginationContainer}>
+          {slides.map((_, index) => (
+            <View
+              key={`dot-${index}`}
+              style={[
+                styles.paginationDot,
+                activeIndex === index 
+                  ? styles.paginationDotActive 
+                  : styles.paginationDotInactive
+              ]}
+            />
+          ))}
+        </View>
+      )}
     </View>
   );
 }

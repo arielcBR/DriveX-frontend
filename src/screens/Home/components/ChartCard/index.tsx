@@ -1,17 +1,9 @@
 import React from "react";
 import { Text, View, StyleProp, ViewStyle } from "react-native";
-
+import { ChartCardProps, HoursWorkedProps } from "./types";
 import { colors } from "@/constants/theme";
 import { styles } from "./styles";
-export interface HoursWorkedProps {
-  day: string;
-  value: number;
-  active: boolean;
-}
 
-interface ChartCardProps {
-  hoursWorked: HoursWorkedProps[];
-}
 
 export function ChartCard({ hoursWorked }: ChartCardProps) {
   const getChartBarStyle = (workDay: HoursWorkedProps): StyleProp<ViewStyle> => {

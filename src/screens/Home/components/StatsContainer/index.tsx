@@ -1,18 +1,9 @@
 import React from "react";
 import { Text, View } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-
+import { StatsContainerProps } from "./types";
 import { colors, sizes } from "@/constants/theme";
 import { styles } from "./styles";
-export interface StatsProps {
-  valuePerKm: string;
-  profitPerHour: string;
-  kmDriven: string;
-}
-
-interface StatsContainerProps {
-  stats: StatsProps;
-}
 
 export function StatsContainer({ stats }: StatsContainerProps) {
   return (
