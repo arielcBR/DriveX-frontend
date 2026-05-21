@@ -8,15 +8,13 @@ export function useHomeData(idUsuario: number) {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    // Garante que o loading fique true se o idUsuario mudar e o hook refazer a chamada
     setLoading(true);
-    
+
     fetchHomeData(idUsuario)
       .then((resultado) => setData(resultado))
       .catch((erro) => setError(erro))
       .finally(() => setLoading(false));
-      
-  }, [idUsuario]); // Re-executa se o ID do usuário mudar
+  }, [idUsuario]); 
 
   return { data, loading, error };
 }

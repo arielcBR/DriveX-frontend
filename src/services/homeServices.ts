@@ -1,6 +1,20 @@
 import { API_CONFIG } from "@/config/api";
 import { HomeData } from "@/types/home";
 
+function getInitials (name: string): string  {
+  if (!name || name.trim() === "") return "";
+  
+  const nameParts = name.trim().split(/\s+/);
+  
+  if (nameParts.length === 1) 
+    return nameParts[0].charAt(0).toUpperCase();
+  
+  const firstLetter = nameParts[0].charAt(0);
+  const lastLetter = nameParts[nameParts.length - 1].charAt(0);
+  
+  return (firstLetter + lastLetter).toUpperCase();
+};
+
 export async function fetchHomeData(idUsuario: number): Promise<HomeData> {
   try {
     const [receitaRes, metaRes, custosRes] = await Promise.all([
@@ -19,18 +33,16 @@ export async function fetchHomeData(idUsuario: number): Promise<HomeData> {
       custosRes.json(),
     ]);
 
-    // Mapeamento correto para a interface HomeData
+    // Simulando o dado que viria do backend ou do seu Contexto de Autenticação
+    const userName = "Jorgito Andes";
+
     return {
-      // Mapeia os dados das requisições para as chaves esperadas pelos seus Cards
       earnings: receita, 
       alerts: custos,
-
-      // Mocks temporários para satisfazer a tipagem do HomeData 
-      // e renderizar o restante da tela sem quebrar
       user: {
         id: idUsuario,
-        name: "Ariel", 
-        initials: "AC",
+        name: userName, 
+        initials: getInitials(userName),
       },
       stats: {
         valuePerKm: "0,00",

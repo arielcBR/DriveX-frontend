@@ -9,12 +9,12 @@ import { Header } from "./components/Header";
 import { styles } from "./styles";
 import { useHomeData } from "@/hooks/useHomeData";
 
+// import { useAuth } from "@/contexts/AuthContext";
 
 export function Home() {
   // const { user } = useAuth();
-  const idUsuario = 7; // Substitua pelo ID real do usuário logado
-  
-  const { data, loading, error } = useHomeData(idUsuario);
+  const userId = 7; 
+  const { data, loading, error } = useHomeData(userId);
 
   if (loading) return <LoadingSpinner />;
   if (error) return <ErrorMessage onRetry={() => {}} />;
@@ -23,12 +23,10 @@ export function Home() {
   return (
     <Container>
       <View style={styles.content}>
-        <Header initials="AC" /> 
-        <Text style={styles.greetingText}>Bem-vindo!</Text>
-        
+        <Header initials={data.user.initials} /> 
+        <Text style={styles.greetingText}>Bem-vindo, {data.user.name}!</Text>
         <EarningsCard earnings={data.earnings} />
         
-        {/* CORREÇÃO: Alterado de data.alertas para data.alerts */}
         <AlertsCard alertsData={data.alerts} />
       </View>
     </Container>
