@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     width: "100%",
-    backgroundColor: "rgba(163, 230, 53, 0.05)", // Um leve verde escuro de fundo
+    backgroundColor: "rgba(163, 230, 53, 0.05)", 
     borderRadius: 20,
     padding: 20,
     borderWidth: 1,
@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
   },
   progressValue: {
     fontFamily: fonts.bold,
-    fontSize: 32, // O "3/5" bem grande
+    fontSize: 32, 
     color: colors["green--500"],
   },
   subText: {

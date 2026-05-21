@@ -1,13 +1,7 @@
 import { colors } from "@/constants/theme";
 import { View } from "react-native";
 import { styles } from "./styles";
-
-export type ProgressVariant = "success" | "info" | "danger" | "warning" | "purple";
-
-interface ProgressBarProps {
-  percentage: number;
-  variant: ProgressVariant;
-}
+import { ProgressBarProps } from "@/types/progress";
 
 export function ProgressBar({ percentage, variant }: ProgressBarProps) {
 

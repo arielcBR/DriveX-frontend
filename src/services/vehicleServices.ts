@@ -12,7 +12,6 @@ export async function registerVehicle(payload: RegisterVehiclePayload): Promise<
     });
 
     if (!response.ok) {
-      // Tenta extrair o JSON de erro do backend (ex: erro 409)
       const errorData = await response.json().catch(() => null);
       throw new Error(errorData?.message || "Erro ao cadastrar veículo.");
     }

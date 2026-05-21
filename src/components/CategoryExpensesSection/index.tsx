@@ -2,20 +2,8 @@ import { useRouter } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
 import { CategoryExpenseItem } from "./components/CategoryExpenseItem";
 import { styles } from "./styles";
+import { Props } from "./types";
 
-interface CategoryData {
-  id: string;
-  label: string;
-  amount: number;
-  maxValue: number;
-  iconName: any;
-  iconBgColor: string;
-  variant: any;
-}
-
-interface Props {
-  data: CategoryData[];
-}
 
 export function CategoryExpensesSection({ data }: Props) {
   const router = useRouter();

@@ -1,13 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { styles } from './styles';
+import { FilterType, FinanceHeaderProps } from './types';
 
-export type FilterType = 'Hoje' | 'Semana' | 'Mês';
-
-interface FinanceHeaderProps {
-  selectedFilter: FilterType;
-  onFilterChange: (filter: FilterType) => void;
-}
 
 export function FinanceHeader({ selectedFilter, onFilterChange }: FinanceHeaderProps) {
   const filters: FilterType[] = ['Hoje', 'Semana', 'Mês'];

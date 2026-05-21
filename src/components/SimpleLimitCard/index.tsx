@@ -2,17 +2,9 @@ import { colors } from "@/constants/theme";
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { Text, View } from "react-native";
-import { ProgressBar, ProgressVariant } from "../ProgressBar"; // Ajuste o caminho
+import { ProgressBar } from "../ProgressBar"; 
 import { styles } from "./styles";
-
-interface SimpleLimitCardProps {
-  label: string;
-  currentValue: number;
-  maxValue: number;
-  iconName: React.ComponentProps<typeof MaterialIcons>["name"];
-  variant: ProgressVariant;
-  prefix?: string; // Ex: "R$"
-}
+import { SimpleLimitCardProps } from "./types";
 
 export function SimpleLimitCard({ 
   label, 
@@ -23,7 +15,7 @@ export function SimpleLimitCard({
   prefix = "R$" 
 }: SimpleLimitCardProps) {
   
-  // Formatação simples de moeda/valor
+  const percentage = (currentValue / maxValue) * 100;
   const formattedValue = `${prefix} ${currentValue.toLocaleString("pt-BR")}`;
 
   return (
@@ -38,10 +30,8 @@ export function SimpleLimitCard({
       </View>
 
       <ProgressBar 
-        currentValue={currentValue} 
-        maxValue={maxValue} 
         variant={variant} 
-        showPercent={true} 
+        percentage={percentage} 
       />
     </View>
   );

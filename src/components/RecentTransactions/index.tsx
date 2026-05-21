@@ -2,21 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { styles } from './styles';
-
-export interface Transaction {
-  id: string;
-  description: string;
-  date: string;
-  amount: number;
-  type: 'income' | 'outcome';
-  iconName: React.ComponentProps<typeof MaterialIcons>['name'];
-  iconColor: string;
-}
-
-interface RecentTransactionsProps {
-  data: Transaction[];
-  onViewAll?: () => void;
-}
+import { RecentTransactionsProps } from './types';
 
 export function RecentTransactions({ data, onViewAll }: RecentTransactionsProps) {
   return (

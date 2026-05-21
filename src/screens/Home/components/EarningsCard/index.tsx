@@ -24,7 +24,6 @@ export function EarningsCard({ earnings }: EarningsCardProps) {
         </View>
       </View>
       
-      {/* Aplicando a formatação segura */}
       <Text style={styles.mainCardValue}>R$ {formatCurrency(safeEarnings.gross)}</Text>
 
       <View style={styles.mainCardFooter}>

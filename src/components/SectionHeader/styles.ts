@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     color: colors.white,
   },
   badge: {
-    backgroundColor: "rgba(163, 230, 53, 0.1)", // Verde transparente baseado no seu green--500
+    backgroundColor: "rgba(163, 230, 53, 0.1)", 
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,

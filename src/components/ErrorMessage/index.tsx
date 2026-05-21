@@ -1,10 +1,6 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
-
-type ErrorMessageProps = {
-  message?: string;
-  onRetry?: () => void;
-};
+import { ErrorMessageProps } from "./types";
 
 export function ErrorMessage({
   message = "Algo deu errado. Tente novamente.",

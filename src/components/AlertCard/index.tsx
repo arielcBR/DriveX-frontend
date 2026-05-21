@@ -2,19 +2,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { Text, View } from "react-native";
 import { styles } from "./styles";
+import { AlertProps } from "./types";
 
-export interface AlertItem {
-  id: string;
-  label: string;
-  value: string;
-  status: "warning" | "danger";
-}
-
-interface AlertProps {
-  title: string;
-  iconName: React.ComponentProps<typeof MaterialIcons>["name"];
-  data: AlertItem[];
-}
 
 export function Alert({ title, iconName, data }: AlertProps) {
   if (!data || data.length === 0) {

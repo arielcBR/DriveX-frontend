@@ -18,7 +18,7 @@ function getInitials (name: string): string  {
 export async function fetchHomeData(idUsuario: number): Promise<HomeData> {
   try {
     const [receitaRes, metaRes, custosRes] = await Promise.all([
-      fetch(`${API_CONFIG.baseURL}/relatorios/receita-semana/${idUsuario}`),
+      fetch(`${API_CONFIG.baseURL}/relatorios/informacoes-semana/${idUsuario}`),
       fetch(`${API_CONFIG.baseURL}/meta/${idUsuario}`),
       fetch(`${API_CONFIG.baseURL}/custo/${idUsuario}/em-aberto`),
     ]);
@@ -33,11 +33,14 @@ export async function fetchHomeData(idUsuario: number): Promise<HomeData> {
       custosRes.json(),
     ]);
 
-    // Simulando o dado que viria do backend ou do seu Contexto de Autenticação
     const userName = "Jorgito Andes";
 
     return {
-      earnings: receita, 
+      earnings: {
+        gross: receita.ganhoBruto || 0,
+        net: receita.lucroLiquido || 0,
+        expenses: receita.despesaTotal || 0
+      }, 
       alerts: custos,
       user: {
         id: idUsuario,

@@ -1,13 +1,10 @@
 import React from "react";
-import { Text, TouchableOpacity, TouchableOpacityProps, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { styles } from "./styles";
+import { GoogleButtonProps } from "./types";
 
-interface Props extends TouchableOpacityProps {
-    title: string;
-}
-
-export function GoogleButton({ title, ...rest }: Props) {
+export function GoogleButton({ title, ...rest }: GoogleButtonProps) {
     return (
         <TouchableOpacity style={styles.container} activeOpacity={0.8} {...rest}>
             <View style={styles.content}>

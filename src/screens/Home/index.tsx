@@ -20,13 +20,13 @@ export function Home() {
   if (error) return <ErrorMessage onRetry={() => {}} />;
   if (!data) return null;
 
+
   return (
     <Container>
       <View style={styles.content}>
         <Header initials={data.user.initials} /> 
         <Text style={styles.greetingText}>Bem-vindo, {data.user.name}!</Text>
         <EarningsCard earnings={data.earnings} />
-        
         <AlertsCard alertsData={data.alerts} />
       </View>
     </Container>

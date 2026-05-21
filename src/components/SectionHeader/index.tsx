@@ -3,12 +3,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { Text, View } from "react-native";
 import { styles } from "./styles";
-
-interface SectionHeaderProps {
-  title: string;
-  iconName: keyof typeof MaterialIcons.preset; // Isso ajuda o IntelliSense a sugerir ícones
-  badgeText?: string;
-}
+import { SectionHeaderProps } from "./types";
 
 export function SectionHeader({ title, iconName, badgeText }: SectionHeaderProps) {
   return (

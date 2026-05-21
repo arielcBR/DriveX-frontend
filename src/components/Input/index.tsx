@@ -1,15 +1,9 @@
 import { colors, sizes } from "@/constants/theme";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import React, { ComponentProps } from "react";
-import { Text, TextInput, TextInputProps, View } from "react-native";
+import React from "react";
+import { Text, TextInput, View } from "react-native";
 import { styles } from "./styles";
-
-type MaterialIconName = ComponentProps<typeof MaterialIcons>["name"];
-
-interface Props extends TextInputProps {
-  labelText: string;
-  iconName?: MaterialIconName;
-}
+import { Props } from "./types";
 
 export function Input({ labelText, iconName, ...rest }: Props) {
   return (

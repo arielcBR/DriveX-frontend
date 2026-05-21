@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     width: "100%",
-    backgroundColor: "rgba(255, 255, 255, 0.03)", // Um leve destaque para o card
+    backgroundColor: "rgba(255, 255, 255, 0.03)", 
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
   label: {
     fontFamily: fonts.medium,
     fontSize: 14,
-    color: colors["blue--300"], // Cor mais suave para o nome da categoria
+    color: colors["blue--300"],
   },
   valueText: {
     fontFamily: fonts.bold,

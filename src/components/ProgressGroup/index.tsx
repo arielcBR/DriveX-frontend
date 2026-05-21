@@ -1,14 +1,8 @@
 import { colors } from "@/constants/theme";
 import { Text, View } from "react-native";
-import { ProgressBar, ProgressVariant } from "../ProgressBar";
+import { ProgressBar } from "../ProgressBar";
 import { styles } from "./styles";
-
-interface ProgressGroupProps {
-  label: string;
-  currentValue: number;
-  maxValue: number;
-  variant: ProgressVariant;
-}
+import { ProgressGroupProps } from "./types";
 
 export function ProgressGroup({ label, currentValue, maxValue, variant }: ProgressGroupProps) {
 

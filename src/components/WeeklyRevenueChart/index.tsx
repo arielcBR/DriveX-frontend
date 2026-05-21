@@ -2,19 +2,7 @@ import React from "react";
 import { Text, View } from "react-native";
 import { VerticalProgressBar } from "./components/VerticalProgressBar";
 import { styles } from "./styles";
-
-interface WeeklyData {
-  label: string; 
-  value: number;
-  max: number;
-  isActive?: boolean;
-}
-
-interface WeeklyRevenueChartProps {
-  title: string;
-  period: Date; 
-  data: WeeklyData[];
-}
+import { WeeklyRevenueChartProps } from "./types";
 
 export function WeeklyRevenueChart({ title, period, data }: WeeklyRevenueChartProps) {
   

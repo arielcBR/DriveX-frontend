@@ -2,13 +2,7 @@ import React from "react";
 import { Text, View } from "react-native";
 import { ProgressBar } from "../ProgressBar";
 import { styles } from "./styles";
-
-interface SummaryGoalCardProps {
-  currentValue: number;
-  maxValue: number;
-  period: string; // Ex: "Abr 2026"
-  daysRemaining: number;
-}
+import { SummaryGoalCardProps } from "./types";
 
 export function SummaryGoalCard({ 
   currentValue, 
@@ -16,12 +10,14 @@ export function SummaryGoalCard({
   period, 
   daysRemaining 
 }: SummaryGoalCardProps) {
+  const percentage = (currentValue / maxValue) * 100;
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.progressInfo}>
           <Text style={styles.progressTitle}>Progresso geral</Text>
-          <Text style={styles.progressValue}>{currentValue}/{maxValue}</Text>
+          <Text style={styles.progressValue}>{percentage.toFixed(2)}%</Text>
           <Text style={styles.subText}>metas conquistadas</Text>
         </View>
 
@@ -34,10 +30,8 @@ export function SummaryGoalCard({
 
       <View style={styles.progressBarContainer}>
         <ProgressBar 
-          currentValue={currentValue} 
-          maxValue={maxValue} 
           variant="success" 
-          showPercent={false} 
+          percentage={percentage} 
         />
       </View>
     </View>

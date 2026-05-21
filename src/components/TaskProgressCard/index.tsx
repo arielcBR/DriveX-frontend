@@ -2,19 +2,9 @@ import { colors } from "@/constants/theme";
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { Text, View } from "react-native";
-import { ProgressBar, ProgressVariant } from "../ProgressBar";
+import { ProgressBar } from "../ProgressBar";
 import { styles } from "./styles";
-
-interface TaskProgressCardProps {
-  title: string;
-  subTitle: string;
-  currentValue: number;
-  maxValue: number;
-  unit: string; // Ex: "corridas", "km", "R$"
-  variant: ProgressVariant;
-  iconName: React.ComponentProps<typeof MaterialIcons>["name"];
-  status: "em andamento" | "concluída" | "atenção";
-}
+import { TaskProgressCardProps } from "./types"
 
 export function TaskProgressCard({ 
   title, 
@@ -27,14 +17,14 @@ export function TaskProgressCard({
   status 
 }: TaskProgressCardProps) {
   
-  // Cores do Badge de Status
   const statusColors = {
     "em andamento": colors["green--300"],
     "concluída": colors["green--500"],
     "atenção": colors["red--400"],
   };
 
-  // Formatação da label da barra (ex: "40 de 50 corridas feitas")
+  const percentage = (currentValue / maxValue) * 100;
+
   const progressLabel = unit === "R$" 
     ? `R$ ${currentValue} de R$ ${maxValue}`
     : `${currentValue} de ${maxValue} ${unit}`;
@@ -59,11 +49,8 @@ export function TaskProgressCard({
 
       <View style={styles.footer}>
         <ProgressBar 
-          currentValue={currentValue} 
-          maxValue={maxValue} 
           variant={variant} 
-          label={progressLabel} // Enviando a label pronta para o componente pai da barra
-          showPercent={true} 
+          percentage={percentage} 
         />
       </View>
     </View>

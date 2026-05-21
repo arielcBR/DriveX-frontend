@@ -1,10 +1,9 @@
 import { sizes } from "@/constants/theme";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import React, { ComponentProps, memo, useCallback, useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 import { FlatList, Modal, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
-
-type MaterialIconName = ComponentProps<typeof MaterialIcons>["name"];
+import { SelectProps } from "./types";
 
 const OptionItem = memo(({ item, onPress }: { item: string; onPress: (val: string) => void }) => (
   <TouchableOpacity 
@@ -15,17 +14,7 @@ const OptionItem = memo(({ item, onPress }: { item: string; onPress: (val: strin
   </TouchableOpacity>
 ));
 
-interface Props {
-  labelText: string;
-  iconName?: MaterialIconName;
-  placeholder?: string;
-  value?: string;
-  options: string[];
-  onSelect: (value: string) => void;
-  disabled?: boolean;
-}
-
-export function Select({ labelText, iconName, placeholder, value, options, onSelect, disabled }: Props) {
+export function Select({ labelText, iconName, placeholder, value, options, onSelect, disabled }: SelectProps) {
   const [modalVisible, setModalVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
 

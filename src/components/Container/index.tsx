@@ -1,10 +1,7 @@
-import { ScrollView } from "react-native"; // Importe o ScrollView nativo
+import { ScrollView } from "react-native"; 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles } from "./styles";
-
-interface ContainerProps {
-    children: React.ReactNode;
-}
+import { ContainerProps } from "./types";
 
 export function Container({ children }: ContainerProps) {
     return (

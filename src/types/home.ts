@@ -1,6 +1,3 @@
-// types/home.ts (ou o arquivo onde essas tipagens globais estão)
-
-// Importamos a tipagem real que o backend devolve e o componente espera
 import { CostResponse } from "@/screens/Home/components/AlertsCard/types";
 
 export type HomeUser = {
@@ -9,7 +6,6 @@ export type HomeUser = {
   name: string;
 };
 
-// Atualizado para aceitar number | string, espelhando o EarningsCard
 export type HomeEarnings = {
   gross?: number | string;
   expenses?: number | string;
