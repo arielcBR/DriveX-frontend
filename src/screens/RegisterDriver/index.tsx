@@ -5,6 +5,7 @@ import { Input } from "@/components/Input";
 import { Logo } from "@/components/Logo";
 import { PasswordInput } from "@/components/PasswordInput";
 import { useRegisterDriver } from "@/hooks/useRegisterDriver";
+import { router } from "expo-router";
 import { useState } from "react";
 import { Alert, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
@@ -25,7 +26,10 @@ export function RegisterDriver() {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      Alert.alert("E-mail inválido", "Por favor, insira um endereço de e-mail válido.");
+      Alert.alert(
+        "E-mail inválido",
+        "Por favor, insira um endereço de e-mail válido.",
+      );
       return;
     }
 
@@ -44,8 +48,12 @@ export function RegisterDriver() {
       setTelefone("");
       setEmail("");
       setSenha("");
+      router.push("/login");
     } else {
-      Alert.alert("Erro", "Não foi possível cadastrar o usuário. Verifique os dados e tente novamente.");
+      Alert.alert(
+        "Erro",
+        "Não foi possível cadastrar o usuário. Verifique os dados e tente novamente.",
+      );
     }
   };
 
@@ -112,7 +120,10 @@ export function RegisterDriver() {
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>Já tem uma conta?</Text>
-            <TouchableOpacity onPress={() => console.log("Navegar para SignIn")} activeOpacity={0.7}>
+            <TouchableOpacity
+              onPress={() => router.push("/login")}
+              activeOpacity={0.7}
+            >
               <Text style={styles.footerLink}>Entrar</Text>
             </TouchableOpacity>
           </View>
