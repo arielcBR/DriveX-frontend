@@ -1,7 +1,8 @@
 import { API_CONFIG } from "@/config/api";
+import { Goal } from "@/types/goals";
 import { HomeData } from "@/types/home";
 
-function getInitials (name: string): string  {
+function getInitials(name: string): string {
   if (!name || name.trim() === "") return "";
   
   const nameParts = name.trim().split(/\s+/);
@@ -13,7 +14,7 @@ function getInitials (name: string): string  {
   const lastLetter = nameParts[nameParts.length - 1].charAt(0);
   
   return (firstLetter + lastLetter).toUpperCase();
-};
+}
 
 export async function fetchHomeData(idUsuario: number): Promise<HomeData> {
   try {
@@ -42,6 +43,7 @@ export async function fetchHomeData(idUsuario: number): Promise<HomeData> {
         expenses: receita.despesaTotal || 0
       }, 
       alerts: custos,
+      goals: meta as Goal[],
       user: {
         id: idUsuario,
         name: userName, 
