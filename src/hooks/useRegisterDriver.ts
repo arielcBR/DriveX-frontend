@@ -1,14 +1,12 @@
+import { useState } from "react";
 import { createDriver } from "@/services/driverServices";
 import { RegisterDriverRequest, RegisterDriverResponse } from "@/types/driver";
-import { useState } from "react";
 
 export function useRegisterDriver() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const register = async (
-    data: RegisterDriverRequest,
-  ): Promise<RegisterDriverResponse | null> => {
+  const register = async (data: RegisterDriverRequest): Promise<RegisterDriverResponse | null> => {
     setLoading(true);
     setError(null);
     try {
