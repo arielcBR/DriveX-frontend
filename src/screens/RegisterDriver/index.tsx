@@ -15,12 +15,14 @@ export function RegisterDriver() {
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [confirmarSenha, setConfirmarSenha] = useState("");
 
   const [touched, setTouched] = useState({
     nome: false,
     telefone: false,
     email: false,
     senha: false,
+    confirmarSenha: false,
   });
 
   const { register, loading } = useRegisterDriver();
@@ -33,17 +35,24 @@ export function RegisterDriver() {
   const isTelefoneValid = phoneRegex.test(numbersOnly);
   const isEmailValid = emailRegex.test(email);
   const isSenhaValid = senha.trim().length > 0;
+  const isConfirmarSenhaValid =
+    confirmarSenha.trim().length > 0 && confirmarSenha === senha;
 
-  const isFormValid = isNomeValid && isTelefoneValid && isEmailValid && isSenhaValid;
+  const isFormValid =
+    isNomeValid &&
+    isTelefoneValid &&
+    isEmailValid &&
+    isSenhaValid &&
+    isConfirmarSenhaValid;
 
   const handleRegister = async () => {
     if (!isFormValid) {
-      // Força mostrar todos os erros se o botão for de alguma forma clicado
       setTouched({
         nome: true,
         telefone: true,
         email: true,
         senha: true,
+        confirmarSenha: true,
       });
       return;
     }
@@ -56,10 +65,20 @@ export function RegisterDriver() {
       setTelefone("");
       setEmail("");
       setSenha("");
-      setTouched({ nome: false, telefone: false, email: false, senha: false });
+      setConfirmarSenha("");
+      setTouched({
+        nome: false,
+        telefone: false,
+        email: false,
+        senha: false,
+        confirmarSenha: false,
+      });
       router.push("/login");
     } else {
-      Alert.alert("Erro", "Não foi possível cadastrar o usuário. Verifique os dados e tente novamente.");
+      Alert.alert(
+        "Erro",
+        "Não foi possível cadastrar o usuário. Verifique os dados e tente novamente.",
+      );
     }
   };
 
@@ -80,7 +99,11 @@ export function RegisterDriver() {
             value={nome}
             onChangeText={setNome}
             onBlur={() => setTouched((prev) => ({ ...prev, nome: true }))}
-            errorMessage={touched.nome && !isNomeValid ? "O preenchimento é obrigatório" : undefined}
+            errorMessage={
+              touched.nome && !isNomeValid
+                ? "O preenchimento é obrigatório"
+                : undefined
+            }
           />
 
           <Input
@@ -96,8 +119,8 @@ export function RegisterDriver() {
                 ? !telefone.trim()
                   ? "O preenchimento é obrigatório"
                   : !isTelefoneValid
-                  ? "Telefone inválido"
-                  : undefined
+                    ? "Telefone inválido"
+                    : undefined
                 : undefined
             }
           />
@@ -116,8 +139,8 @@ export function RegisterDriver() {
                 ? !email.trim()
                   ? "O preenchimento é obrigatório"
                   : !isEmailValid
-                  ? "E-mail inválido"
-                  : undefined
+                    ? "E-mail inválido"
+                    : undefined
                 : undefined
             }
           />
@@ -129,7 +152,31 @@ export function RegisterDriver() {
             value={senha}
             onChangeText={setSenha}
             onBlur={() => setTouched((prev) => ({ ...prev, senha: true }))}
-            errorMessage={touched.senha && !isSenhaValid ? "O preenchimento é obrigatório" : undefined}
+            errorMessage={
+              touched.senha && !isSenhaValid
+                ? "O preenchimento é obrigatório"
+                : undefined
+            }
+          />
+
+          <PasswordInput
+            labelText="Confirmar Senha"
+            placeholder="••••••••"
+            iconName="lock-outline"
+            value={confirmarSenha}
+            onChangeText={setConfirmarSenha}
+            onBlur={() =>
+              setTouched((prev) => ({ ...prev, confirmarSenha: true }))
+            }
+            errorMessage={
+              touched.confirmarSenha
+                ? !confirmarSenha.trim()
+                  ? "O preenchimento é obrigatório"
+                  : confirmarSenha !== senha
+                    ? "As senhas não coincidem"
+                    : undefined
+                : undefined
+            }
           />
 
           <GoogleButton title="Cadastrar com Google" />
@@ -150,7 +197,10 @@ export function RegisterDriver() {
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>Já tem uma conta?</Text>
-            <TouchableOpacity onPress={() => router.push("/login")} activeOpacity={0.7}>
+            <TouchableOpacity
+              onPress={() => router.push("/login")}
+              activeOpacity={0.7}
+            >
               <Text style={styles.footerLink}>Entrar</Text>
             </TouchableOpacity>
           </View>
