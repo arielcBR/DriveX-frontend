@@ -16,27 +16,35 @@ export function RegisterDriver() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
+  const [touched, setTouched] = useState({
+    nome: false,
+    telefone: false,
+    email: false,
+    senha: false,
+  });
+
   const { register, loading } = useRegisterDriver();
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phoneRegex = /^\d{11}$/;
+
+  const isNomeValid = nome.trim().length > 0;
+  const numbersOnly = telefone.replace(/\D/g, "");
+  const isTelefoneValid = phoneRegex.test(numbersOnly);
+  const isEmailValid = emailRegex.test(email);
+  const isSenhaValid = senha.trim().length > 0;
+
+  const isFormValid = isNomeValid && isTelefoneValid && isEmailValid && isSenhaValid;
+
   const handleRegister = async () => {
-    if (!nome || !telefone || !email || !senha) {
-      Alert.alert("Erro", "Preencha todos os campos.");
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      Alert.alert(
-        "E-mail inválido",
-        "Por favor, insira um endereço de e-mail válido.",
-      );
-      return;
-    }
-
-    const phoneRegex = /^\d{11}$/;
-    const numbersOnly = telefone.replace(/\D/g, "");
-    if (!phoneRegex.test(numbersOnly)) {
-      Alert.alert("Telefone inválido", "Por favor, insira um telefone válido.");
+    if (!isFormValid) {
+      // Força mostrar todos os erros se o botão for de alguma forma clicado
+      setTouched({
+        nome: true,
+        telefone: true,
+        email: true,
+        senha: true,
+      });
       return;
     }
 
@@ -48,12 +56,10 @@ export function RegisterDriver() {
       setTelefone("");
       setEmail("");
       setSenha("");
+      setTouched({ nome: false, telefone: false, email: false, senha: false });
       router.push("/login");
     } else {
-      Alert.alert(
-        "Erro",
-        "Não foi possível cadastrar o usuário. Verifique os dados e tente novamente.",
-      );
+      Alert.alert("Erro", "Não foi possível cadastrar o usuário. Verifique os dados e tente novamente.");
     }
   };
 
@@ -73,6 +79,8 @@ export function RegisterDriver() {
             iconName="person-outline"
             value={nome}
             onChangeText={setNome}
+            onBlur={() => setTouched((prev) => ({ ...prev, nome: true }))}
+            errorMessage={touched.nome && !isNomeValid ? "O preenchimento é obrigatório" : undefined}
           />
 
           <Input
@@ -82,6 +90,16 @@ export function RegisterDriver() {
             keyboardType="phone-pad"
             value={telefone}
             onChangeText={setTelefone}
+            onBlur={() => setTouched((prev) => ({ ...prev, telefone: true }))}
+            errorMessage={
+              touched.telefone
+                ? !telefone.trim()
+                  ? "O preenchimento é obrigatório"
+                  : !isTelefoneValid
+                  ? "Telefone inválido"
+                  : undefined
+                : undefined
+            }
           />
 
           <Input
@@ -92,6 +110,16 @@ export function RegisterDriver() {
             autoCapitalize="none"
             value={email}
             onChangeText={setEmail}
+            onBlur={() => setTouched((prev) => ({ ...prev, email: true }))}
+            errorMessage={
+              touched.email
+                ? !email.trim()
+                  ? "O preenchimento é obrigatório"
+                  : !isEmailValid
+                  ? "E-mail inválido"
+                  : undefined
+                : undefined
+            }
           />
 
           <PasswordInput
@@ -100,6 +128,8 @@ export function RegisterDriver() {
             iconName="lock-outline"
             value={senha}
             onChangeText={setSenha}
+            onBlur={() => setTouched((prev) => ({ ...prev, senha: true }))}
+            errorMessage={touched.senha && !isSenhaValid ? "O preenchimento é obrigatório" : undefined}
           />
 
           <GoogleButton title="Cadastrar com Google" />
@@ -115,15 +145,12 @@ export function RegisterDriver() {
             title={loading ? "Cadastrando..." : "Cadastrar"}
             textStyle={{ fontSize: 20 }}
             onPress={handleRegister}
-            disabled={loading}
+            disabled={loading || !isFormValid}
           />
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>Já tem uma conta?</Text>
-            <TouchableOpacity
-              onPress={() => router.push("/login")}
-              activeOpacity={0.7}
-            >
+            <TouchableOpacity onPress={() => router.push("/login")} activeOpacity={0.7}>
               <Text style={styles.footerLink}>Entrar</Text>
             </TouchableOpacity>
           </View>
