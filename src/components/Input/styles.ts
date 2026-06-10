@@ -30,5 +30,13 @@ export const styles = StyleSheet.create({
         color:  colors["white"],
         fontFamily: fonts["medium"],
         fontSize: 16,
+    },
+    inputWrapperError: {
+        borderColor: colors["red--500"],
+    },
+    errorText: {
+        color: colors["red--500"],
+        fontSize: 12,
+        marginTop: 4,
     }
 });
