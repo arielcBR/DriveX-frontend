@@ -80,11 +80,6 @@ export function RegisterDriver() {
         router.push("/login");
       }
     } catch (error: any) {
-      setApiError(error.message);
-      Alert.alert(
-        "Erro",
-        "Não foi possível cadastrar o usuário. Verifique os dados fornecidos.",
-      );
       const msg = error.message || "";
       setApiError(msg);
 
@@ -117,7 +112,10 @@ export function RegisterDriver() {
             placeholder="Nome do usuário"
             iconName="person-outline"
             value={nome}
-            onChangeText={setNome}
+            onChangeText={(text) => {
+              setNome(text);
+              setApiError("");
+            }}
             onBlur={() => setTouched((prev) => ({ ...prev, nome: true }))}
             errorMessage={
               touched.nome && !isNomeValid
@@ -132,16 +130,21 @@ export function RegisterDriver() {
             iconName="phone"
             keyboardType="phone-pad"
             value={telefone}
-            onChangeText={setTelefone}
+            onChangeText={(text) => {
+              setTelefone(text);
+              setApiError("");
+            }}
             onBlur={() => setTouched((prev) => ({ ...prev, telefone: true }))}
             errorMessage={
-              touched.telefone
-                ? !telefone.trim()
-                  ? "O preenchimento é obrigatório"
-                  : !isTelefoneValid
-                    ? "Telefone inválido"
-                    : undefined
-                : undefined
+              apiError.toLowerCase().includes("telefone")
+                ? apiError
+                : touched.telefone
+                  ? !telefone.trim()
+                    ? "O preenchimento é obrigatório"
+                    : !isTelefoneValid
+                      ? "Telefone inválido"
+                      : undefined
+                  : undefined
             }
           />
 
@@ -152,16 +155,22 @@ export function RegisterDriver() {
             keyboardType="email-address"
             autoCapitalize="none"
             value={email}
-            onChangeText={setEmail}
+            onChangeText={(text) => {
+              setEmail(text);
+              setApiError("");
+            }}
             onBlur={() => setTouched((prev) => ({ ...prev, email: true }))}
             errorMessage={
-              touched.email
-                ? !email.trim()
-                  ? "O preenchimento é obrigatório"
-                  : !isEmailValid
-                    ? "E-mail inválido"
-                    : undefined
-                : undefined
+              apiError.toLowerCase().includes("e-mail") ||
+              apiError.toLowerCase().includes("email")
+                ? apiError
+                : touched.email
+                  ? !email.trim()
+                    ? "O preenchimento é obrigatório"
+                    : !isEmailValid
+                      ? "E-mail inválido"
+                      : undefined
+                  : undefined
             }
           />
 
@@ -170,7 +179,10 @@ export function RegisterDriver() {
             placeholder="••••••••"
             iconName="lock-outline"
             value={senha}
-            onChangeText={setSenha}
+            onChangeText={(text) => {
+              setSenha(text);
+              setApiError("");
+            }}
             onBlur={() => setTouched((prev) => ({ ...prev, senha: true }))}
             errorMessage={
               touched.senha && !isSenhaValid
@@ -184,7 +196,10 @@ export function RegisterDriver() {
             placeholder="••••••••"
             iconName="lock-outline"
             value={confirmarSenha}
-            onChangeText={setConfirmarSenha}
+            onChangeText={(text) => {
+              setConfirmarSenha(text);
+              setApiError("");
+            }}
             onBlur={() =>
               setTouched((prev) => ({ ...prev, confirmarSenha: true }))
             }
