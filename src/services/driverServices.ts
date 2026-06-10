@@ -14,7 +14,15 @@ export async function createDriver(
     });
 
     if (!response.ok) {
-      throw new Error("Erro ao criar usuário");
+      const errorData = await response.text();
+      let errorMessage = "Erro ao criar usuário";
+      try {
+        const errorJson = JSON.parse(errorData);
+        errorMessage = errorJson.message || errorJson.error || errorData;
+      } catch (e) {
+        errorMessage = errorData || "Erro ao criar usuário";
+      }
+      throw new Error(errorMessage);
     }
 
     const result = await response.json();

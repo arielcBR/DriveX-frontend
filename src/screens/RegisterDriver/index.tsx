@@ -25,6 +25,8 @@ export function RegisterDriver() {
     confirmarSenha: false,
   });
 
+  const [apiError, setApiError] = useState("");
+
   const { register, loading } = useRegisterDriver();
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -57,28 +59,46 @@ export function RegisterDriver() {
       return;
     }
 
-    const response = await register({ nome, telefone, email, senha });
+    setApiError("");
 
-    if (response) {
-      Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");
-      setNome("");
-      setTelefone("");
-      setEmail("");
-      setSenha("");
-      setConfirmarSenha("");
-      setTouched({
-        nome: false,
-        telefone: false,
-        email: false,
-        senha: false,
-        confirmarSenha: false,
-      });
-      router.push("/login");
-    } else {
+    try {
+      const response = await register({ nome, telefone, email, senha });
+      if (response) {
+        Alert.alert("Sucesso", "Usuário cadastrado com sucesso!");
+        setNome("");
+        setTelefone("");
+        setEmail("");
+        setSenha("");
+        setConfirmarSenha("");
+        setTouched({
+          nome: false,
+          telefone: false,
+          email: false,
+          senha: false,
+          confirmarSenha: false,
+        });
+        router.push("/login");
+      }
+    } catch (error: any) {
+      setApiError(error.message);
       Alert.alert(
         "Erro",
-        "Não foi possível cadastrar o usuário. Verifique os dados e tente novamente.",
+        "Não foi possível cadastrar o usuário. Verifique os dados fornecidos.",
       );
+      const msg = error.message || "";
+      setApiError(msg);
+
+      const isEmailError =
+        msg.toLowerCase().includes("e-mail") ||
+        msg.toLowerCase().includes("email");
+      const isPhoneError = msg.toLowerCase().includes("telefone");
+
+      if (!isEmailError && !isPhoneError) {
+        Alert.alert(
+          "Erro",
+          "Não foi possível cadastrar o usuário. Verifique os dados fornecidos.",
+        );
+      }
     }
   };
 
