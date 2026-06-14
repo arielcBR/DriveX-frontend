@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#233324", // Dark green shade based on image
+    backgroundColor: "#233324",
     padding: 16,
     gap: 12,
   },
@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   headerText: {
     fontFamily: fonts.medium,
     fontSize: 14,
-    color: "#6B9B62", // Faded green text
+    color: "#6B9B62",
   },
   body: {
     padding: 16,
@@ -62,5 +62,32 @@ export const styles = StyleSheet.create({
     fontFamily: fonts.bold,
     fontSize: 14,
     color: colors["red--400"],
+  },
+  rowBetween: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  tooltipContainer: {
+    position: "absolute",
+    bottom: 60,
+    right: 16,
+    left: 16,
+    backgroundColor: colors["blue--900"],
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: colors["blue--600"],
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  tooltipText: {
+    fontFamily: fonts.medium,
+    fontSize: 14,
+    color: colors.white,
+    lineHeight: 20,
   },
 });
