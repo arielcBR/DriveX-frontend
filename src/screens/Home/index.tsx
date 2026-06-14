@@ -11,7 +11,7 @@ import { Header } from "./components/Header";
 import { styles } from "./styles";
 
 export function Home() {
-  const userId = 7; 
+  const userId = 1; 
   const { data, loading, error } = useHomeData(userId);
 
   if (loading) return <LoadingSpinner />;

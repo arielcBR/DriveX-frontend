@@ -1,4 +1,5 @@
 import { appFonts } from "@/constants/fonts";
+import { AuthProvider } from "@/contexts/authContexts";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { ActivityIndicator } from "react-native";
@@ -11,8 +12,10 @@ export default function Layout() {
   }
 
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    <AuthProvider>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
+    </AuthProvider>
   );
 }
