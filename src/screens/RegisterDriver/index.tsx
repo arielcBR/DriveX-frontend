@@ -1,18 +1,21 @@
-import { useRouter } from "expo-router";
-import { useState } from "react";
 import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { GoogleButton } from "@/components/GoogleButton";
 import { Input } from "@/components/Input";
 import { Logo } from "@/components/Logo";
 import { PasswordInput } from "@/components/PasswordInput";
+import { useAuth } from "@/hooks/useAuth";
 import { useSignUp } from "@/hooks/useSignUp";
+import { useRouter } from "expo-router";
+import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
 
 export function RegisterDriver() {
     const router = useRouter();
     const { register, loading, error } = useSignUp();
+    const { signIn } = useAuth();
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
 
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
@@ -20,10 +23,17 @@ export function RegisterDriver() {
     const [password, setPassword] = useState("");
 
     const handleRegister = async () => {
-      
+
         const result = await register(name, email, password, phone);
         if (result.success) {
-            router.push("/sign-in");
+            try {
+                setIsLoggingIn(true);
+                await signIn(email, password);
+                router.replace("/register-vehicle");
+            } catch (err: any) {
+                setIsLoggingIn(false);
+                router.push("/sign-in");
+            }
         }
     };
 
@@ -77,10 +87,10 @@ export function RegisterDriver() {
                     </View>
                     <Button
                         variant="primary"
-                        title={loading ? "Cadastrando..." : "Cadastrar"}
+                        title={loading || isLoggingIn ? "Processando..." : "Cadastrar"}
                         textStyle={{ fontSize: 20 }}
                         onPress={handleRegister}
-                        disabled={loading}
+                        disabled={loading || isLoggingIn}
                     />
                     <View style={styles.footer}>
                         <Text style={styles.footerText}>Já tem uma conta?</Text>

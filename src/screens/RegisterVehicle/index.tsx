@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { Input } from "@/components/Input";
@@ -11,6 +12,7 @@ import { useRegisterVehicle } from "@/hooks/useRegisterVehicle";
 // import { useAuth } from "@/contexts/AuthContext";
 
 export function RegisterVehicle() {
+    const router = useRouter();
     // const { user } = useAuth();
     
     const [vehicleTypeStr, setVehicleTypeStr] = useState<string>("Carro");
@@ -130,7 +132,9 @@ export function RegisterVehicle() {
         const result = await register(payload);
 
         if (result.success) {
-            Alert.alert("Sucesso", "Veículo cadastrado com sucesso!");
+            Alert.alert("Sucesso", "Veículo cadastrado com sucesso!", [
+                { text: "OK", onPress: () => router.replace("/(tabs)") }
+            ]);
         } else {
             Alert.alert("Erro", result.error); 
         }
