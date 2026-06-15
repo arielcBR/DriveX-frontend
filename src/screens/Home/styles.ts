@@ -3,12 +3,15 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   content: {
-    gap: 2,
+    flex: 1,
+    gap: 16,
+    paddingBottom: 24,
   },
   greetingText: {
     color: colors.white,
     fontFamily: fonts.bold,
-    fontSize: 17,
-    marginBottom: 12,
+    fontSize: 22,
+    marginTop: 8,
+    marginBottom: 4,
   },
 });

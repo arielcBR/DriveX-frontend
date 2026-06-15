@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { GoogleButton } from "@/components/GoogleButton";
@@ -11,6 +12,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
 
 export function SignIn() {
+  const router = useRouter();
   const [rememberMe, setRememberMe] = useState(false);
 
   return (
@@ -72,7 +74,10 @@ export function SignIn() {
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>Não tem uma conta?</Text>
-            <TouchableOpacity activeOpacity={0.7}>
+            <TouchableOpacity 
+              activeOpacity={0.7}
+              onPress={() => router.push("/sign-up")}
+            >
               <Text style={styles.footerLink}>Criar conta</Text>
             </TouchableOpacity>
           </View>

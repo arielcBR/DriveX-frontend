@@ -25,6 +25,7 @@ export type HomeHoursWorked = {
 };
 
 export type HomeData = {
+  goals: any[];
   user: HomeUser;
   earnings: HomeEarnings;
   stats: HomeStats;
