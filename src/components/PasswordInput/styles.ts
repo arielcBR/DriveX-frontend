@@ -36,5 +36,13 @@ export const styles = StyleSheet.create({
     },
     rightIcon: {
         color: colors["blue--300"],
+    },
+    inputWrapperError: {
+        borderColor: colors["red--500"],
+    },
+    errorText: {
+        color: colors["red--500"],
+        fontSize: 12,
+        marginTop: 4,
     }
 });

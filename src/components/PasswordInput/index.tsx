@@ -5,14 +5,14 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
 import { Props } from "./types";
 
-export function PasswordInput({ labelText, iconName, ...rest }: Props) {
+export function PasswordInput({ labelText, iconName, errorMessage, ...rest }: Props) {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   return (
     <View style={styles.content}>
       <Text style={styles.label}>{labelText}</Text>
       
-      <View style={styles.inputWrapper}>
+      <View style={[styles.inputWrapper, errorMessage ? styles.inputWrapperError : null]}>
         {iconName && 
           <MaterialIcons 
             style={styles.icon} 
@@ -40,6 +40,7 @@ export function PasswordInput({ labelText, iconName, ...rest }: Props) {
           />
         </TouchableOpacity>
       </View>
+      {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
     </View>
   );
 }
