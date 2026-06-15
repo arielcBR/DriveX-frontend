@@ -1,4 +1,3 @@
-import { useRouter } from "expo-router";
 import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { GoogleButton } from "@/components/GoogleButton";
@@ -6,14 +5,41 @@ import { Input } from "@/components/Input";
 import { Logo } from "@/components/Logo";
 import { PasswordInput } from "@/components/PasswordInput";
 import { colors } from "@/constants/theme";
+import { useAuth } from "@/hooks/useAuth";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
 
 export function SignIn() {
   const router = useRouter();
+  const { signIn } = useAuth();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSignIn = async () => {
+    if (!email || !password) {
+      setError("Preencha todos os campos");
+      return;
+    }
+
+    setError("");
+    setLoading(true);
+
+    try {
+      await signIn(email, password);
+      router.replace("/register-vehicle");
+    } catch (err: any) {
+      setError(err.message || "Erro ao fazer login");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Container>
@@ -31,13 +57,25 @@ export function SignIn() {
             iconName="mail-outline"
             keyboardType="email-address"
             autoCapitalize="none"
+            value={email}
+            onChangeText={(text) => {
+              setEmail(text);
+              setError("");
+            }}
           />
 
           <PasswordInput
             labelText="Senha"
             placeholder="••••••••"
             iconName="lock-outline"
+            value={password}
+            onChangeText={(text) => {
+              setPassword(text);
+              setError("");
+            }}
           />
+
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
           <View style={styles.optionsRow}>
             <TouchableOpacity
@@ -60,8 +98,10 @@ export function SignIn() {
 
           <Button
             variant="primary"
-            title="Entrar"
+            title={loading ? "Entrando..." : "Entrar"}
             textStyle={{ fontSize: 20 }}
+            onPress={handleSignIn}
+            disabled={loading}
           />
 
           <View style={styles.separatorContainer}>
@@ -74,7 +114,7 @@ export function SignIn() {
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>Não tem uma conta?</Text>
-            <TouchableOpacity 
+            <TouchableOpacity
               activeOpacity={0.7}
               onPress={() => router.push("/sign-up")}
             >
