@@ -9,11 +9,12 @@ import { useEffect, useState } from "react";
 import { Text, View, Alert } from "react-native";
 import { styles } from "./styles";
 import { useRegisterVehicle } from "@/hooks/useRegisterVehicle";
-// import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
+
 
 export function RegisterVehicle() {
     const router = useRouter();
-    // const { user } = useAuth();
+    const { user } = useAuth();
     
     const [vehicleTypeStr, setVehicleTypeStr] = useState<string>("Carro");
     const vehicleType: VehicleType = vehicleTypeStr === "Moto" ? "motorcycles" : "cars";
@@ -111,6 +112,7 @@ export function RegisterVehicle() {
     };
 
     const handleSubmit = async () => {
+        console.log(user.id);
         if (!brand || !model || !version || !color || !licensePlate || !initialKm) {
             Alert.alert("Atenção", "Por favor, preencha todos os campos do veículo.");
             return;
@@ -126,7 +128,7 @@ export function RegisterVehicle() {
             ano: extractedYear,
             cor: color,
             kmAtual: parseInt(initialKm),
-            idUsuario: 5 
+            idUsuario: user.id
         };
 
         const result = await register(payload);

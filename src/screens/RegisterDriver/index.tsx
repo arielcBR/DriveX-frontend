@@ -29,7 +29,7 @@ export function RegisterDriver() {
             try {
                 setIsLoggingIn(true);
                 await signIn(email, password);
-                router.replace("/register-vehicle");
+                router.replace("/sign-in");
             } catch (err: any) {
                 setIsLoggingIn(false);
                 router.push("/sign-in");
