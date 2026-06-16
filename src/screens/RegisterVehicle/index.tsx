@@ -112,7 +112,7 @@ export function RegisterVehicle() {
     };
 
     const handleSubmit = async () => {
-        console.log(user.id);
+        console.log(user.idUsuario);
         if (!brand || !model || !version || !color || !licensePlate || !initialKm) {
             Alert.alert("Atenção", "Por favor, preencha todos os campos do veículo.");
             return;
@@ -128,7 +128,7 @@ export function RegisterVehicle() {
             ano: extractedYear,
             cor: color,
             kmAtual: parseInt(initialKm),
-            idUsuario: user.id
+            idUsuario: user.idUsuario
         };
 
         const result = await register(payload);
