@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { Input } from "@/components/Input";
@@ -8,10 +9,12 @@ import { useEffect, useState } from "react";
 import { Text, View, Alert } from "react-native";
 import { styles } from "./styles";
 import { useRegisterVehicle } from "@/hooks/useRegisterVehicle";
-// import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
+
 
 export function RegisterVehicle() {
-    // const { user } = useAuth();
+    const router = useRouter();
+    const { user } = useAuth();
     
     const [vehicleTypeStr, setVehicleTypeStr] = useState<string>("Carro");
     const vehicleType: VehicleType = vehicleTypeStr === "Moto" ? "motorcycles" : "cars";
@@ -109,6 +112,7 @@ export function RegisterVehicle() {
     };
 
     const handleSubmit = async () => {
+        console.log(user.id);
         if (!brand || !model || !version || !color || !licensePlate || !initialKm) {
             Alert.alert("Atenção", "Por favor, preencha todos os campos do veículo.");
             return;
@@ -124,13 +128,15 @@ export function RegisterVehicle() {
             ano: extractedYear,
             cor: color,
             kmAtual: parseInt(initialKm),
-            idUsuario: 5 
+            idUsuario: user.id
         };
 
         const result = await register(payload);
 
         if (result.success) {
-            Alert.alert("Sucesso", "Veículo cadastrado com sucesso!");
+            Alert.alert("Sucesso", "Veículo cadastrado com sucesso!", [
+                { text: "OK", onPress: () => router.replace("/(tabs)") }
+            ]);
         } else {
             Alert.alert("Erro", result.error); 
         }

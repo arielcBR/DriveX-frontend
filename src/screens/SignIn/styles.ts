@@ -19,6 +19,12 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 0,
   },
+  errorText: {
+    color: colors["red--500"],
+    fontFamily: fonts.medium,
+    fontSize: 14,
+    marginTop: -8,
+  },
   optionsRow: {
     flexDirection: "row",
     justifyContent: "space-between",

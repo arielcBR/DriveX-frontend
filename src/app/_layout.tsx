@@ -13,9 +13,7 @@ export default function Layout() {
 
   return (
     <AuthProvider>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack>
+      <Stack screenOptions={{ headerShown: false }} />
     </AuthProvider>
   );
 }
