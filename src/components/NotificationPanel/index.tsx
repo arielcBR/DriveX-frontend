@@ -1,9 +1,10 @@
 import { colors, sizes } from "@/constants/theme";
+import { usePendencias } from "@/hooks/usePendencias";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import React, { useEffect, useRef } from "react";
 import {
+  ActivityIndicator,
   Animated,
-  FlatList,
   Modal,
   StyleSheet,
   Text,
@@ -12,36 +13,17 @@ import {
   View,
 } from "react-native";
 import { styles } from "./styles";
-import { NotificationItem, NotificationPanelProps } from "./types";
+import { NotificationPanelProps } from "./types";
 
-const mockNotifications: NotificationItem[] = [
-  {
-    id: "1",
-    title: "Revisão agendada",
-    message: "A revisão do seu veículo (Placa ABC-1234) está agendada para amanhã.",
-    time: "Há 2 horas",
-    read: false,
-  },
-  {
-    id: "2",
-    title: "Meta atingida!",
-    message: "Parabéns! Você atingiu sua meta de faturamento desta semana.",
-    time: "Ontem",
-    read: true,
-  },
-  {
-    id: "3",
-    title: "Alerta de manutenção",
-    message: "É recomendável verificar o nível de óleo nos próximos dias.",
-    time: "2 dias atrás",
-    read: true,
-  },
-];
-
-export function NotificationPanel({ visible, onClose }: NotificationPanelProps) {
+export function NotificationPanel({
+  visible,
+  onClose,
+}: NotificationPanelProps) {
   const [showModal, setShowModal] = React.useState(visible);
   const slideAnim = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  const { data, loading, error } = usePendencias(visible);
 
   useEffect(() => {
     if (visible) {
@@ -81,44 +63,135 @@ export function NotificationPanel({ visible, onClose }: NotificationPanelProps) 
     outputRange: [400, 0],
   });
 
-  const renderItem = ({ item }: { item: NotificationItem }) => (
-    <View style={[styles.notificationItem, !item.read && styles.notificationItemUnread]}>
-      <View style={styles.itemHeader}>
-        <Text style={styles.itemTitle}>{item.title}</Text>
-        <Text style={styles.itemTime}>{item.time}</Text>
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <View style={styles.emptyContainer}>
+          <ActivityIndicator size="large" color={colors["green--500"]} />
+          <Text style={styles.emptyText}>Carregando...</Text>
+        </View>
+      );
+    }
+
+    if (error) {
+      return (
+        <View style={styles.emptyContainer}>
+          <MaterialIcons
+            name="error-outline"
+            size={48}
+            color={colors["red--400"]}
+          />
+          <Text style={styles.emptyText}>Erro ao carregar pendências.</Text>
+        </View>
+      );
+    }
+
+    if (!data) {
+      return null;
+    }
+
+    const { kmDesatualizado, manutencaoKmVencido, manutencaoTempoVencido } =
+      data;
+
+    const items = [];
+    if (kmDesatualizado) {
+      items.push({
+        id: "1",
+        title: "Atualização de quilometragem",
+        message:
+          "A quilometragem do seu veículo encontra-se desatualizada. Por favor, registre o valor atual para garantir a precisão do plano de manutenções.",
+        icon: "speed" as const,
+      });
+    }
+    if (manutencaoKmVencido) {
+      items.push({
+        id: "2",
+        title: "Revisão por quilometragem",
+        message:
+          "O veículo atingiu o limite de quilometragem estipulado para a revisão. Recomendamos realizar a manutenção preventiva para assegurar seu bom funcionamento.",
+        icon: "build" as const,
+      });
+    }
+    if (manutencaoTempoVencido) {
+      items.push({
+        id: "3",
+        title: "Revisão periódica vencida",
+        message:
+          "O prazo estipulado para a revisão periódica do seu veículo expirou. Agende a manutenção preventiva para evitar danos futuros e garantir sua segurança.",
+        icon: "event-busy" as const,
+      });
+    }
+
+    if (items.length === 0) {
+      return (
+        <View style={styles.emptyContainer}>
+          <MaterialIcons
+            name="notifications-none"
+            size={48}
+            color={colors["blue--300"]}
+          />
+          <Text style={styles.emptyText}>Nenhuma pendência</Text>
+        </View>
+      );
+    }
+
+    return (
+      <View style={styles.listContent}>
+        {items.map((item) => (
+          <View
+            key={item.id}
+            style={[styles.notificationItem, styles.notificationItemUnread]}
+          >
+            <View style={styles.itemHeader}>
+              <MaterialIcons
+                name={item.icon}
+                size={20}
+                color={colors.white}
+                style={{ marginTop: 2 }}
+              />
+              <Text style={styles.itemTitle}>{item.title}</Text>
+            </View>
+            <Text style={styles.itemMessage}>{item.message}</Text>
+          </View>
+        ))}
       </View>
-      <Text style={styles.itemMessage}>{item.message}</Text>
-    </View>
-  );
+    );
+  };
 
   return (
-    <Modal visible={showModal} transparent animationType="none" onRequestClose={onClose}>
+    <Modal
+      visible={showModal}
+      transparent
+      animationType="none"
+      onRequestClose={onClose}
+    >
       <View style={styles.overlay}>
         <TouchableWithoutFeedback onPress={onClose}>
-          <Animated.View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(0,0,0,0.6)', opacity: fadeAnim }]} />
+          <Animated.View
+            style={[
+              StyleSheet.absoluteFill,
+              { backgroundColor: "rgba(0,0,0,0.6)", opacity: fadeAnim },
+            ]}
+          />
         </TouchableWithoutFeedback>
 
-        <Animated.View style={[styles.panel, { transform: [{ translateX: slideInterpolate }] }]}>
+        <Animated.View
+          style={[
+            styles.panel,
+            { transform: [{ translateX: slideInterpolate }] },
+          ]}
+        >
           <View style={styles.header}>
-            <Text style={styles.title}>Notificações</Text>
+            <Text style={styles.title}>Pendências</Text>
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <MaterialIcons name="close" size={sizes.icon_medium} color={colors.white} />
+              <MaterialIcons
+                name="close"
+                size={sizes.icon_medium}
+                color={colors.white}
+              />
             </TouchableOpacity>
           </View>
-
-          <FlatList
-            data={mockNotifications}
-            keyExtractor={(item) => item.id}
-            renderItem={renderItem}
-            contentContainerStyle={styles.listContent}
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={
-              <View style={styles.emptyContainer}>
-                <MaterialIcons name="notifications-none" size={48} color={colors["blue--300"]} />
-                <Text style={styles.emptyText}>Nenhuma notificação</Text>
-              </View>
-            }
-          />
+          {renderContent()}
         </Animated.View>
       </View>
     </Modal>
