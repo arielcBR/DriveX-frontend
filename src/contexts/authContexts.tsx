@@ -1,17 +1,11 @@
+import { AuthContextData, User } from "@/types/auth";
 import React, { createContext, ReactNode, useState } from "react";
 import { login } from "../services/authServices";
-
-export interface AuthContextData {
-  user: any;
-  signed: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
-  signOut: () => void;
-}
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   async function signIn(email: string, password: string) {
     const response = await login(email, password);
