@@ -9,8 +9,10 @@ export interface GoalCardProps {
   current: string;
   target: string;
   color: string;
+  onDelete?: () => void;
 }
 
 export interface GoalsSectionProps {
   goals: any[];
+  onRefresh?: () => void;
 }

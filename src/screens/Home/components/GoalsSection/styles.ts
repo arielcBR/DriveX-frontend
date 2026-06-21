@@ -41,29 +41,21 @@ export const styles = StyleSheet.create({
   cardHeader: { 
     flexDirection: "row", 
     alignItems: "center", 
-    gap: 10 
-  },
-  cardTextContent: { 
-    flex: 1 
+    justifyContent: "space-between" 
   },
   cardTitle: { 
     color: colors.white, 
     fontFamily: fonts.bold, 
-    fontSize: 14 
+    fontSize: 16 
   },
   cardSubtitle: { 
     color: colors["blue--300"], 
-    fontSize: 10 
-  },
-  progressContainer: { 
-    flexDirection: "row", 
-    alignItems: "center", 
-    gap: 10 
+    fontSize: 12 
   },
   progressBarBg: { 
-    flex: 1, 
+    width: "100%",
     height: 6, 
-    backgroundColor: colors["blue--700"], 
+    backgroundColor: colors["blue--900"], 
     borderRadius: 3, 
     overflow: "hidden" 
   },
@@ -74,15 +66,15 @@ export const styles = StyleSheet.create({
   progressText: { 
     fontSize: 12, 
     fontFamily: fonts.bold, 
-    width: 35, 
     textAlign: "right" 
   },
   cardFooter: { 
-    alignItems: "flex-start" 
+    alignItems: "flex-start",
+    marginTop: 8
   },
   footerText: { 
     color: colors["blue--300"], 
-    fontSize: 10 
+    fontSize: 12 
   },
   pagination: { 
     flexDirection: "row", 

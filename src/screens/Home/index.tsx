@@ -11,11 +11,10 @@ import { GoalsSection } from "./components/GoalsSection";
 import { styles } from "./styles";
 
 export function Home() {
-  const userId = 1; 
-  const { data, loading, error } = useHomeData(userId);
+  const { data, loading, error, refetch } = useHomeData();
 
   if (loading) return <LoadingSpinner />;
-  if (error) return <ErrorMessage onRetry={() => {}} />;
+  if (error) return <ErrorMessage onRetry={refetch} />;
   if (!data) return null;
 
   return (
@@ -24,7 +23,7 @@ export function Home() {
         <Header initials={data.user.initials} />
         <Text style={styles.greetingText}>Bem-vindo, {data.user.name}!</Text>
         <EarningsCard earnings={data.earnings} />
-        <GoalsSection goals={data.goals} />
+        <GoalsSection goals={data.goals} onRefresh={refetch} />
         <AlertsCard alertsData={data.alerts} />
       </View>
     </Container>

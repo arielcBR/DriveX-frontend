@@ -172,4 +172,16 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: fonts.bold,
   },
+  errorText: {
+    color: "#FF5B5B",
+    fontSize: 12,
+    fontFamily: fonts.medium,
+    textAlign: "center",
+  },
+  successText: {
+    color: colors["green--500"],
+    fontSize: 12,
+    fontFamily: fonts.medium,
+    textAlign: "center",
+  },
 });
