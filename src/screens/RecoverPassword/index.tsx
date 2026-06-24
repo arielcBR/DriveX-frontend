@@ -2,19 +2,17 @@ import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { Input } from "@/components/Input";
 import { Logo } from "@/components/Logo";
-import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import { useRecoverPassword } from "@/hooks/useRecoverPassword";
+import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
 
 export function RecoverPassword() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
+  const { email, setEmail, isLoading, handleSendCode, router } = useRecoverPassword();
 
   return (
     <Container>
       <View style={styles.content}>
-        
         <View style={styles.header}>
           <Logo />
         </View>
@@ -40,19 +38,15 @@ export function RecoverPassword() {
               variant="primary"
               title="Enviar código"
               textStyle={{ fontSize: 16 }}
-              onPress={() => console.log("Navegar para tela de Token")}
+              onPress={handleSendCode}
+              disabled={isLoading}
             />
 
-            <TouchableOpacity 
-              style={styles.secondaryButton} 
-              activeOpacity={0.7}
-              onPress={() => router.back()}
-            >
+            <TouchableOpacity style={styles.secondaryButton} activeOpacity={0.7} onPress={() => router.back()} disabled={isLoading}>
               <Text style={styles.secondaryButtonText}>Voltar ao login</Text>
             </TouchableOpacity>
           </View>
         </View>
-
       </View>
     </Container>
   );
