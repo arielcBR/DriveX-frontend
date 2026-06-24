@@ -6,14 +6,14 @@ import { HeaderProps } from "./types";
 import { colors, sizes } from "@/constants/theme";
 import { styles } from "./styles";
 
-export function Header({ initials }: HeaderProps) {
+export function Header({ initials, onCarPress }: HeaderProps) {
   return (
     <View style={styles.header}>
       <TouchableOpacity style={styles.avatar} onPress={() => router.push("/profile")}>
         <Text style={styles.avatarText}>{initials}</Text>
       </TouchableOpacity>
       <View style={styles.headerIcons}>
-        <TouchableOpacity style={styles.iconButton}>
+        <TouchableOpacity style={styles.iconButton} onPress={onCarPress}>
           <MaterialIcons name="directions-car" size={sizes.icon_medium} color={colors["green--500"]} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconButton}>

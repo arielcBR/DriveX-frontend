@@ -92,3 +92,30 @@ export async function deleteMeta(id: number): Promise<void> {
         throw error;
     }
 }
+
+export async function updateMileage(data: { idUsuario: number, kmAtualizado: number }): Promise<void> {
+    try {
+        const response = await fetch(`${API_CONFIG.baseURL}/veiculo/atualizar-km`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            let errorMsg = "Erro ao atualizar quilometragem";
+            try {
+                const errorData = await response.json();
+                errorMsg = errorData?.message || errorData?.erro || errorMsg;
+            } catch (e) {
+                // Ignore parse errors
+            }
+            throw new Error(errorMsg);
+        }
+    } catch (error) {
+        console.error("Erro no updateMileage:", error);
+        throw error;
+    }
+}

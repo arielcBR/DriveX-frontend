@@ -1,0 +1,97 @@
+import { colors, fonts } from "@/constants/theme";
+import { StyleSheet } from "react-native";
+
+export const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer: {
+    width: "85%",
+    backgroundColor: colors["blue--700"],
+    borderRadius: 16,
+    padding: 24,
+    alignItems: "center",
+  },
+  closeBtnIcon: {
+    position: "absolute",
+    right: 16,
+    top: 16,
+    padding: 8,
+  },
+  iconCircle: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: colors["green--500"],
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  title: {
+    color: colors.white,
+    fontFamily: fonts.bold,
+    fontSize: 18,
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  subtitle: {
+    color: colors["blue--300"],
+    fontSize: 14,
+    textAlign: "center",
+    marginBottom: 24,
+    paddingHorizontal: 16,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: colors["blue--700"],
+    borderRadius: 8,
+    width: "100%",
+    paddingHorizontal: 16,
+    height: 48,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: colors["blue--500"],
+  },
+  textInput: {
+    flex: 1,
+    color: colors.white,
+    fontSize: 16,
+  },
+  unitText: {
+    color: colors["blue--300"],
+    fontSize: 16,
+    marginLeft: 8,
+  },
+  confirmBtn: {
+    backgroundColor: colors["green--500"],
+    width: "100%",
+    height: 48,
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 8,
+  },
+  confirmBtnText: {
+    color: colors["blue--900"],
+    fontFamily: fonts.bold,
+    fontSize: 16,
+  },
+  errorText: {
+    color: "#FF5B5B",
+    fontSize: 12,
+    fontFamily: fonts.medium,
+    textAlign: "center",
+    marginBottom: 8,
+  },
+  successText: {
+    color: colors["green--500"],
+    fontSize: 12,
+    fontFamily: fonts.medium,
+    textAlign: "center",
+    marginBottom: 8,
+  },
+});

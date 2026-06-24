@@ -22,3 +22,25 @@ export async function registerVehicle(payload: RegisterVehiclePayload): Promise<
     throw error;
   }
 }
+
+export async function getVehicleData(): Promise<VehicleResponse> {
+  try {
+    const response = await fetch(`${API_CONFIG.baseURL}/veiculo`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null);
+      throw new Error(errorData?.message || "Erro ao buscar veículo.");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Erro no getVehicleData:", error);
+    throw error;
+  }
+}
