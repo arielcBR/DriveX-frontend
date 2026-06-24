@@ -1,11 +1,12 @@
 import { API_CONFIG } from "../config/api";
 
 export interface LoginResponse {
-  idUsuario: number;
-  nome: string;
+  id: number;
+  name: string;
   email: string;
+  telefone?: string;
+  nome: string;
   dataCadastro: string;
-  telefone: string;
   notificacaoVencimento: boolean;
   notificacaoManutencao: boolean;
 }
