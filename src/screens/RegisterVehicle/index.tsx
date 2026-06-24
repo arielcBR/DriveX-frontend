@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
 import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { Input } from "@/components/Input";
@@ -14,7 +14,8 @@ import { useAuth } from "@/hooks/useAuth";
 
 export function RegisterVehicle() {
     const router = useRouter();
-    const { user } = useAuth();
+    const params = useLocalSearchParams();
+    const { signIn } = useAuth();
     
     const [vehicleTypeStr, setVehicleTypeStr] = useState<string>("Carro");
     const vehicleType: VehicleType = vehicleTypeStr === "Moto" ? "motorcycles" : "cars";
@@ -112,7 +113,6 @@ export function RegisterVehicle() {
     };
 
     const handleSubmit = async () => {
-        console.log(user.idUsuario);
         if (!brand || !model || !version || !color || !licensePlate || !initialKm) {
             Alert.alert("Atenção", "Por favor, preencha todos os campos do veículo.");
             return;
@@ -128,15 +128,24 @@ export function RegisterVehicle() {
             ano: extractedYear,
             cor: color,
             kmAtual: parseInt(initialKm),
-            idUsuario: user.idUsuario
+            idUsuario: Number(params.userId)
         };
 
         const result = await register(payload);
 
         if (result.success) {
-            Alert.alert("Sucesso", "Veículo cadastrado com sucesso!", [
-                { text: "OK", onPress: () => router.replace("/(tabs)") }
-            ]);
+            try {
+                if (params.email && params.password) {
+                    await signIn(params.email as string, params.password as string);
+                }
+                Alert.alert("Sucesso", "Veículo cadastrado com sucesso!", [
+                    { text: "OK", onPress: () => router.replace("/(tabs)") }
+                ]);
+            } catch (err) {
+                Alert.alert("Sucesso", "Veículo cadastrado, mas falhou ao fazer login automático.", [
+                    { text: "OK", onPress: () => router.replace("/sign-in") }
+                ]);
+            }
         } else {
             Alert.alert("Erro", result.error); 
         }

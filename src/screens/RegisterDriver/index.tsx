@@ -21,18 +21,63 @@ export function RegisterDriver() {
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
+    const [emailError, setEmailError] = useState("");
+    const [phoneError, setPhoneError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+    const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
     const handleRegister = async () => {
+        setEmailError("");
+        setPhoneError("");
+        setPasswordError("");
+        setConfirmPasswordError("");
+
+        if (!name || !phone || !email || !password || !confirmPassword) {
+            if (!password) setPasswordError("Campo obrigatório");
+            if (!confirmPassword) setConfirmPasswordError("Campo obrigatório");
+            if (!email) setEmailError("Campo obrigatório");
+            if (!phone) setPhoneError("Campo obrigatório");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setConfirmPasswordError("As senhas não coincidem");
+            return;
+        }
 
         const result = await register(name, email, password, phone);
         if (result.success) {
-            try {
-                setIsLoggingIn(true);
-                await signIn(email, password);
-                router.replace("/sign-in");
-            } catch (err: any) {
-                setIsLoggingIn(false);
-                router.push("/sign-in");
+            router.replace({
+                pathname: "/register-vehicle",
+                params: {
+                    userId: result.data?.idUsuario,
+                    email,
+                    password
+                }
+            });
+        } else {
+            const err = result.error;
+            if (typeof err === "object" && err !== null) {
+                if (err.email) setEmailError(err.email);
+                if (err.telefone) setPhoneError(err.telefone);
+                
+                if (err.message && typeof err.message === "string") {
+                    const msg = err.message.toLowerCase();
+                    if (msg.includes("e-mail") || msg.includes("email")) {
+                        setEmailError(err.message);
+                    } else if (msg.includes("telefone") || msg.includes("número")) {
+                        setPhoneError(err.message);
+                    }
+                }
+            } else if (typeof err === "string") {
+                const msg = err.toLowerCase();
+                if (msg.includes("e-mail") || msg.includes("email")) {
+                    setEmailError(err);
+                } else if (msg.includes("telefone") || msg.includes("número")) {
+                    setPhoneError(err);
+                }
             }
         }
     };
@@ -58,7 +103,8 @@ export function RegisterDriver() {
                         iconName="phone"
                         keyboardType="phone-pad"
                         value={phone}
-                        onChangeText={setPhone}
+                        onChangeText={(t) => { setPhone(t); setPhoneError(""); }}
+                        errorMessage={phoneError}
                     />
                     <Input
                         labelText="E-mail"
@@ -67,17 +113,27 @@ export function RegisterDriver() {
                         keyboardType="email-address"
                         autoCapitalize="none"
                         value={email}
-                        onChangeText={setEmail}
+                        onChangeText={(t) => { setEmail(t); setEmailError(""); }}
+                        errorMessage={emailError}
                     />
                     <PasswordInput
                         labelText="Senha"
                         placeholder="••••••••"
                         iconName="lock-outline"
                         value={password}
-                        onChangeText={setPassword}
+                        onChangeText={(t) => { setPassword(t); setPasswordError(""); }}
+                        errorMessage={passwordError}
+                    />
+                    <PasswordInput
+                        labelText="Confirmar Senha"
+                        placeholder="••••••••"
+                        iconName="lock-outline"
+                        value={confirmPassword}
+                        onChangeText={(t) => { setConfirmPassword(t); setConfirmPasswordError(""); }}
+                        errorMessage={confirmPasswordError}
                     />
 
-                    {error && <Text>{error}</Text>}
+                    {error && typeof error === "string" && !emailError && !phoneError && !confirmPasswordError && <Text style={{ color: "red", textAlign: "center" }}>{error}</Text>}
 
                     <GoogleButton title="Cadastrar com Google" />
                     <View style={styles.separatorContainer}>

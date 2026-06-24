@@ -33,7 +33,7 @@ export function SignIn() {
 
     try {
       await signIn(email, password);
-      router.replace("/register-vehicle");
+      router.replace("/(tabs)");
     } catch (err: any) {
       setError(err.message || "Erro ao fazer login");
     } finally {
