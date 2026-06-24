@@ -6,4 +6,5 @@ interface UserProps {
 
 export interface HeaderProps {
   initials: UserProps["initials"];
+  onCarPress?: () => void;
 }
