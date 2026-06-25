@@ -12,16 +12,14 @@ export async function fetchHomeData(): Promise<HomeData> {
             fetch(`${API_CONFIG.baseURL}/login`, { method: 'POST', credentials: 'include' }),
         ]);
 
-        if (!receitaRes.ok || !metaRes.ok || !custosRes.ok || !userRes.ok) {
-            throw new Error("Erro ao buscar dados do dashboard");
+        if (!userRes.ok) {
+            throw new Error("Erro ao buscar dados do usuário");
         }
 
-        const [receita, meta, custos, userProfile] = await Promise.all([
-            receitaRes.json(),
-            metaRes.json(),
-            custosRes.json(),
-            userRes.json(),
-        ]);
+        const receita = receitaRes.ok ? await receitaRes.json().catch(() => ({})) : {};
+        const meta = metaRes.ok ? await metaRes.json().catch(() => ({ content: [] })) : { content: [] };
+        const custos = custosRes.ok ? await custosRes.json().catch(() => ({ content: [] })) : { content: [] };
+        const userProfile = await userRes.json().catch(() => ({}));
 
         const userName = userProfile.nome || "Usuário";
 

@@ -20,6 +20,14 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <MaterialIcons size={28} name="attach-money" color={color} />,
         }}
       />
+
+      <Tabs.Screen
+        name="reports"
+        options={{
+          title: "Relatórios",
+          tabBarIcon: ({ color }) => <MaterialIcons size={28} name="bar-chart" color={color} />,
+        }}
+      />
     </Tabs>
   );
 }

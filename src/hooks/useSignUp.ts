@@ -21,8 +21,9 @@ export function useSignUp() {
             setData(result);
             return { success: true, data: result };
         } catch (err: any) {
-            setError(err.message || "Ocorreu um erro inesperado.");
-            return { success: false, error: err.message };
+            const errorMsg = err.message || (typeof err === "string" ? err : "Ocorreu um erro inesperado.");
+            setError(errorMsg);
+            return { success: false, error: err };
         } finally {
             setLoading(false);
         }

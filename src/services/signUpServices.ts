@@ -23,8 +23,14 @@ export async function signUp(
     });
 
     if (!response.ok) {
+        let errorData: any;
         const errorText = await response.text();
-        throw new Error(errorText || "Erro ao cadastrar usuário");
+        try {
+            errorData = JSON.parse(errorText);
+        } catch (e) {
+            errorData = { message: errorText || "Erro ao cadastrar usuário" };
+        }
+        throw errorData;
     }
 
     const data: SignUpResponse = await response.json();
