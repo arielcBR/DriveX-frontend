@@ -27,6 +27,12 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
   },
+  errorText: {
+    color: colors["red--500"],
+    fontFamily: fonts.medium,
+    fontSize: 14,
+    textAlign: "center",
+  },
   form: {
     gap: 24, 
   },

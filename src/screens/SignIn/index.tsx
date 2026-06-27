@@ -91,7 +91,7 @@ export function SignIn() {
               <Text style={styles.checkboxText}>Lembrar de mim</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity activeOpacity={0.7}>
+            <TouchableOpacity activeOpacity={0.7} onPress={() => router.push("/recover-password")}>
               <Text style={styles.forgotPasswordText}>Esqueci minha senha</Text>
             </TouchableOpacity>
           </View>
