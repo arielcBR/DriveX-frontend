@@ -113,36 +113,6 @@ export const styles = StyleSheet.create({
   periodTextActive: {
     color: colors.white,
   },
-  dateInfoContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 8,
-  },
-  dateBox: {
-    alignItems: "center",
-  },
-  dateLabel: {
-    color: colors["green--500"],
-    fontSize: 10,
-    fontFamily: fonts.bold,
-  },
-  dateValue: {
-    color: colors["blue--300"],
-    fontSize: 12,
-    fontFamily: fonts.medium,
-  },
-  durationBadge: {
-    backgroundColor: colors["blue--700"],
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  durationText: {
-    color: colors["blue--300"],
-    fontSize: 10,
-    fontFamily: fonts.medium,
-  },
   footer: {
     flexDirection: "row",
     gap: 12,
