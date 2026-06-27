@@ -1,10 +1,10 @@
 import { colors } from "@/constants/theme";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 
 export default function TabLayout() {
   return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: colors["green--400"], headerShown: false, }}>
+    <Tabs screenOptions={{ tabBarActiveTintColor: colors["green--400"], tabBarStyle: {backgroundColor: colors['blue--600']}, headerShown: false, }}>
       <Tabs.Screen
         name="index"
         options={{
@@ -12,7 +12,6 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <MaterialIcons size={28} name="home" color={color} />,
         }}
       />
-
       <Tabs.Screen
         name="finance"
         options={{
@@ -20,7 +19,13 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <MaterialIcons size={28} name="attach-money" color={color} />,
         }}
       />
-
+      <Tabs.Screen
+        name="maintenance"
+        options={{
+          title: "Manutenção",
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons size={28} name="wrench-cog" color={color} />,
+        }}
+      />
       <Tabs.Screen
         name="reports"
         options={{
