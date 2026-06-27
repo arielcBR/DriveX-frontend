@@ -2,13 +2,16 @@ import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { Logo } from "@/components/Logo";
 import { PasswordInput } from "@/components/PasswordInput";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { useResetPassword } from "@/hooks/useResetPassword";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
 
 export function ResetPassword() {
-  const { password, setPassword, confirmPassword, setConfirmPassword, isLoading, handleReset, router } = useResetPassword();
+  const { password, setPassword, confirmPassword, setConfirmPassword, isLoading, error, handleReset, router } = useResetPassword();
+
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <Container>
@@ -38,6 +41,8 @@ export function ResetPassword() {
             value={confirmPassword}
             onChangeText={setConfirmPassword}
           />
+
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
           <View style={styles.buttonContainer}>
             <Button

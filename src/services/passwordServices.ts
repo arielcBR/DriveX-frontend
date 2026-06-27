@@ -10,7 +10,12 @@ export async function enviarEmailRecuperacao(email: string) {
   });
 
   if (response.ok === false) {
-    throw new Error("Erro ao enviar e-mail de recuperação.");
+    let errorMsg = "Erro ao enviar e-mail de recuperação.";
+    try {
+      const data = await response.json();
+      if (data && data.message) errorMsg = data.message;
+    } catch (e) { }
+    throw new Error(errorMsg);
   }
 }
 
@@ -24,13 +29,18 @@ export async function validarTokenRecuperacao(email: string, codigo: string) {
   });
 
   if (response.ok === false) {
-    throw new Error("Código inválido ou expirado.");
+    let errorMsg = "Código inválido ou expirado.";
+    try {
+      const data = await response.json();
+      if (data && data.message) errorMsg = data.message;
+    } catch (e) { }
+    throw new Error(errorMsg);
   }
 }
 
 export async function redefinirSenhaFinal(email: string, codigo: string, senhaNova: string) {
   const response = await fetch(`${API_CONFIG.baseURL}/security/redefinir-senha`, {
-    method: "PUT", // Conforme a doc, aqui é PUT
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
@@ -38,6 +48,15 @@ export async function redefinirSenhaFinal(email: string, codigo: string, senhaNo
   });
 
   if (response.ok === false) {
-    throw new Error("Erro ao redefinir a senha.");
+    let errorMsg = "Erro ao redefinir a senha.";
+    try {
+      const data = await response.json();
+      if (data && data.message) {
+        errorMsg = data.message;
+      }
+    } catch (e) {
+      // Ignora erro de JSON e mantém a mensagem padrão
+    }
+    throw new Error(errorMsg);
   }
 }

@@ -2,13 +2,16 @@ import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { Input } from "@/components/Input";
 import { Logo } from "@/components/Logo";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { useRecoverPassword } from "@/hooks/useRecoverPassword";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
 
 export function RecoverPassword() {
-  const { email, setEmail, isLoading, handleSendCode, router } = useRecoverPassword();
+  const { email, setEmail, isLoading, error, handleSendCode, router } = useRecoverPassword();
+
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <Container>
@@ -32,6 +35,8 @@ export function RecoverPassword() {
             value={email}
             onChangeText={setEmail}
           />
+
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
           <View style={styles.buttonContainer}>
             <Button

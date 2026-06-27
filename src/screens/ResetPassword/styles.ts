@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { colors, fonts } from "@/constants/theme";
 
 export const styles = StyleSheet.create({
   content: {
@@ -16,13 +17,20 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
-    color: "#FFFFFF",
+    fontFamily: fonts.bold,
+    color: colors.white,
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 14,
-    color: "#74839D",
+    fontFamily: fonts.regular,
+    color: colors["blue--300"],
+  },
+  errorText: {
+    color: colors["red--500"],
+    fontFamily: fonts.medium,
+    fontSize: 14,
+    textAlign: "center",
   },
   form: {
     width: "100%",
@@ -36,12 +44,12 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 14,
-    backgroundColor: "#132338",
+    backgroundColor: colors["blue--700"],
     borderRadius: 8,
   },
   secondaryButtonText: {
     fontSize: 16,
-    color: "#74839D",
-    fontWeight: "600",
+    color: colors["blue--300"],
+    fontFamily: fonts.bold,
   },
 });

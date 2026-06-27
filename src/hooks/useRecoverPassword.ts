@@ -1,16 +1,18 @@
 import { enviarEmailRecuperacao } from "@/services/passwordServices";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert } from "react-native";
 
 export function useRecoverPassword() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   async function handleSendCode() {
+    setError("");
+    
     if (email === "") {
-      Alert.alert("Atenção", "Por favor, insira o seu e-mail.");
+      setError("Por favor, insira o seu e-mail.");
       return;
     }
 
@@ -18,12 +20,12 @@ export function useRecoverPassword() {
       setIsLoading(true);
       await enviarEmailRecuperacao(email);
       router.push({ pathname: "/verify-token", params: { email: email } });
-    } catch (error) {
-      Alert.alert("Erro", "Não foi possível enviar o código. Verifique se o e-mail está correto.");
+    } catch (err: any) {
+      setError(err.message || "Não foi possível enviar o código. Verifique se o e-mail está correto.");
     } finally {
       setIsLoading(false);
     }
   }
 
-  return { email, setEmail, isLoading, handleSendCode, router };
+  return { email, setEmail, isLoading, error, setError, handleSendCode, router };
 }
