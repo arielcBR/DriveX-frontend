@@ -20,7 +20,10 @@ export function Header({ initials }: HeaderProps) {
         <Text style={styles.avatarText}>{initials}</Text>
       </TouchableOpacity>
       <View style={styles.headerIcons}>
-        <TouchableOpacity style={styles.iconButton}>
+        <TouchableOpacity 
+          style={styles.iconButton}
+          onPress={() => router.push("/vehicle")}
+        >
           <MaterialIcons
             name="directions-car"
             size={sizes.icon_medium}

@@ -19,4 +19,8 @@ export interface RegisterVehiclePayload {
     ano: number;
     cor: string;
     kmAtual: number;
+    intervaloEntreManutencoesKm: number;
+    proximaManutencaoKm: number;
+    intervaloEntreManutencoesMeses: number;
+    proximaManutencaoData: string;
   }
