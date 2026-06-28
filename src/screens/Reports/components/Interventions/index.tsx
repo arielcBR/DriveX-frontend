@@ -53,27 +53,40 @@ function InterventionCard({ title, subtitle, rightText, variant, isPill }: Inter
 }
 
 export function InterventionsList({ data }: InterventionsListProps) {
+  if (!data || data.length === 0) {
+    return (
+      <View style={[styles.container, { alignItems: 'center', padding: 20 }]}>
+        <Text style={{ color: '#9ca3af' }}>Nenhuma manutenção registrada.</Text>
+      </View>
+    );
+  }
+
+  const getVariant = (tipo: string): InterventionVariant => {
+    switch (tipo) {
+      case 'CORRETIVA': return 'danger';
+      case 'PREDITIVA': return 'warning';
+      case 'PREVENTIVA': default: return 'info';
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    if (!dateString) return '';
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
   return (
     <View style={styles.container}>
-      <InterventionCard
-        title="Revisão de freios"
-        subtitle="Preventiva - Mecânica"
-        rightText="Vencido"
-        variant="danger"
-        isPill
-      />
-      <InterventionCard
-        title="Troca de correia dentada"
-        subtitle="Preventiva - Mecânica - 90.000 km"
-        rightText="2.580 km"
-        variant="warning"
-      />
-      <InterventionCard
-        title="Higienização interna"
-        subtitle="Preventiva - Estética - 88.000 km"
-        rightText="580 km"
-        variant="info"
-      />
+      {data.map((manutencao) => (
+        <InterventionCard
+          key={manutencao.idManutencao}
+          title={manutencao.descricao}
+          subtitle={`Tipo: ${manutencao.tipo}`}
+          rightText={formatDate(manutencao.dataManutencao)}
+          variant={getVariant(manutencao.tipo)}
+          isPill
+        />
+      ))}
     </View>
   );
 }

@@ -1,9 +1,5 @@
-export interface SummaryData {
-    preventivesCount?: number;
-    correctivesCount?: number;
-    totalPreventivesCost?: string | number;
-}
+import { InformacoesManutencaoVeiculoResponse } from "@/services/reportsServices";
 
 export interface SummaryBoxesProps {
-    data?: SummaryData;
+    data?: InformacoesManutencaoVeiculoResponse | null;
 }

@@ -1,13 +1,5 @@
-export interface VehicleData {
-    plate?: string;
-    year?: string | number;
-    brand?: string;
-    manufactureYear?: string | number;
-    currentKm?: string | number;
-    model?: string;
-    nextRevisionKm?: string | number;
-}
+import { VehicleResponse } from "@/types/vehicle";
 
 export interface VehicleCardProps {
-    data?: VehicleData;
+    data?: VehicleResponse | null;
 }

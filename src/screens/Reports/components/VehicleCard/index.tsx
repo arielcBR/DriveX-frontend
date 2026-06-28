@@ -8,43 +8,45 @@ import { VehicleCardProps } from "./types";
 export function VehicleCard({ data }: VehicleCardProps) {
   const [showTooltip, setShowTooltip] = useState(false);
 
+  if (!data) return null;
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.iconContainer}>
           <MaterialIcons name="directions-car" size={24} color={colors["blue--900"]} />
         </View>
-        <Text style={styles.headerText}>HBX-2J19 - 2021</Text>
+        <Text style={styles.headerText}>{data.placa} - {data.ano}</Text>
       </View>
       <View style={styles.body}>
         <View style={styles.column}>
           <View style={styles.fieldInfo}>
             <Text style={styles.fieldLabel}>Marca</Text>
-            <Text style={styles.fieldValue}>Hyundai</Text>
+            <Text style={styles.fieldValue}>{data.marca}</Text>
           </View>
           <View style={styles.fieldInfo}>
-            <Text style={styles.fieldLabel}>Ano de fabricação</Text>
-            <Text style={styles.fieldValue}>2020</Text>
+            <Text style={styles.fieldLabel}>Ano</Text>
+            <Text style={styles.fieldValue}>{data.ano}</Text>
           </View>
           <View style={styles.fieldInfo}>
             <Text style={styles.fieldLabel}>KM atual</Text>
-            <Text style={styles.fieldValueHighlight}>87.420 km</Text>
+            <Text style={styles.fieldValueHighlight}>{data.kmAtual.toLocaleString('pt-BR')} km</Text>
           </View>
         </View>
         <View style={styles.divider} />
         <View style={styles.column}>
           <View style={styles.fieldInfo}>
             <Text style={styles.fieldLabel}>Modelo</Text>
-            <Text style={styles.fieldValue}>HB20</Text>
+            <Text style={styles.fieldValue}>{data.modelo}</Text>
           </View>
           <View style={styles.fieldInfo}>
             <Text style={styles.fieldLabel}>Placa</Text>
-            <Text style={styles.fieldValue}>HBX-2J19</Text>
+            <Text style={styles.fieldValue}>{data.placa}</Text>
           </View>
           <View style={styles.fieldInfo}>
             <Text style={styles.fieldLabel}>Próxima revisão</Text>
             <View style={styles.rowBetween}>
-              <Text style={styles.fieldValueDanger}>90.420 km</Text>
+              <Text style={styles.fieldValueDanger}>{data.proximaManutencaoKm.toLocaleString('pt-BR')} km</Text>
               <TouchableOpacity onPress={() => setShowTooltip(!showTooltip)}>
                 <MaterialIcons name="info-outline" size={24} color={colors.white} />
               </TouchableOpacity>
