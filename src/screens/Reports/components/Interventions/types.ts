@@ -1,3 +1,5 @@
+import { ManutencaoResponse } from "@/services/reportsServices";
+
 export type InterventionVariant = "danger" | "warning" | "info";
 
 export interface InterventionData {
@@ -10,5 +12,5 @@ export interface InterventionData {
 }
 
 export interface InterventionsListProps {
-    data?: InterventionData[];
+    data?: ManutencaoResponse[] | null;
 }
