@@ -16,8 +16,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   }
 
+  function updateUser(data: Partial<User>) {
+    setUser(prev => prev ? { ...prev, ...data } : null);
+  }
+
   return (
-    <AuthContext.Provider value={{ signed: !!user, user, signIn, signOut }}>
+    <AuthContext.Provider value={{ signed: !!user, user, signIn, signOut, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

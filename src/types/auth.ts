@@ -1,8 +1,11 @@
 export interface User {
   id: number;
-  name: string;
   email: string;
   telefone?: string;
+  nome: string;
+  dataCadastro?: string;
+  notificacaoVencimento?: boolean;
+  notificacaoManutencao?: boolean;
 }
 
 export interface AuthContextData {
@@ -10,4 +13,5 @@ export interface AuthContextData {
   signed: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => void;
+  updateUser: (data: Partial<User>) => void;
 }

@@ -2,7 +2,6 @@ import { API_CONFIG } from "../config/api";
 
 export interface LoginResponse {
   id: number;
-  name: string;
   email: string;
   telefone?: string;
   nome: string;
