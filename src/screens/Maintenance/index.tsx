@@ -1,7 +1,8 @@
 import { Alert } from "@/components/AlertCard";
-import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
+import { DocumentationModal } from "@/components/DocumentationModal";
 import { Header } from "@/components/Header";
+import { MaintenanceModal } from "@/components/MaintenanceModal";
 import { useMaintenance } from "@/hooks/useMaintenance";
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
@@ -10,14 +11,18 @@ import { styles } from "./styles";
 
 export function Maintenance() {
   const {
-    data,
+    vehicleData,
+    maintenanceInfo,
+    historyList,
     isLoading,
-    handleUpdateMileage,
-    handleRegisterDocumentation,
-    handleRegisterMaintenance,
+    isMaintenanceModalVisible,
+    setIsMaintenanceModalVisible,
+    isDocModalVisible,
+    setIsDocModalVisible,
+    refreshData,
   } = useMaintenance();
 
-  if (isLoading || !data) {
+  if (isLoading || !vehicleData || !maintenanceInfo) {
     return (
       <Container>
         <Header initials="RR" />
@@ -39,26 +44,17 @@ export function Maintenance() {
             <MaterialIcons name="directions-car" size={24} color="#132338" />
           </View>
           <View style={styles.vehicleInfo}>
-            <Text style={styles.vehicleName}>{data.vehicle.name}</Text>
-            <Text style={styles.vehicleDetails}>{data.vehicle.details}</Text>
+            <Text style={styles.vehicleName}>{vehicleData.marca} {vehicleData.modelo}</Text>
+            <Text style={styles.vehicleDetails}>{vehicleData.placa} - {vehicleData.kmAtual} KM</Text>
           </View>
-          <MaterialIcons name="keyboard-arrow-down" size={24} color="#84CC16" />
         </TouchableOpacity>
 
+        {/* Alertas podem ser derivados de regras futuras do backend, deixado fixo por enquanto para manter o layout */}
         <Text style={styles.sectionTitle}>Alertas</Text>
         <Alert
-          title="Revisão dos 200.00 km"
+          title={`Próxima revisão em breve`}
           iconName="error-outline"
-          data={[
-            { id: "1", label: "Preventiva - mecanica", value: "Vencido", status: "danger" },
-          ]}
-        />
-        <Alert
-          title="Revisão dos 300.00 km"
-          iconName="error-outline"
-          data={[
-            { id: "2", label: "Preventiva - mecanica", value: "a fazer", status: "warning" },
-          ]}
+          data={[{ id: "1", label: "Preventiva recomendada", value: "Atenção", status: "warning" }]}
         />
 
         <Text style={styles.sectionTitle}>Saúde do veículo</Text>
@@ -66,109 +62,76 @@ export function Maintenance() {
           <View style={[styles.healthCard, styles.healthCardPreventive]}>
             <MaterialIcons name="fact-check" size={24} color="#84CC16" />
             <Text style={[styles.healthValue, styles.healthValuePreventive]}>
-              {data.health.preventive}
+              {maintenanceInfo.totalManutencoesPreventivas}
             </Text>
-            <Text style={[styles.healthLabel, styles.healthLabelPreventive]}>
-              Preventivas ok
-            </Text>
+            <Text style={[styles.healthLabel, styles.healthLabelPreventive]}>Preventivas ok</Text>
           </View>
           <View style={[styles.healthCard, styles.healthCardCorrective]}>
             <MaterialIcons name="build" size={24} color="#EF4444" />
             <Text style={[styles.healthValue, styles.healthValueCorrective]}>
-              +{data.health.corrective}
+              {maintenanceInfo.totalManutencoesCorretivas}
             </Text>
-            <Text style={[styles.healthLabel, styles.healthLabelCorrective]}>
-              Corretivas
-            </Text>
+            <Text style={[styles.healthLabel, styles.healthLabelCorrective]}>Corretivas</Text>
           </View>
           <View style={[styles.healthCard, styles.healthCardAvg]}>
             <MaterialIcons name="speed" size={24} color="#3B82F6" />
             <Text style={[styles.healthValue, styles.healthValueAvg]}>
-              {data.health.avgKm}
+              {maintenanceInfo.mediaPrecoManutencao ? `R$ ${maintenanceInfo.mediaPrecoManutencao.toFixed(2)}` : "0"}
             </Text>
-            <Text style={[styles.healthLabel, styles.healthLabelAvg]}>
-              km médio
-            </Text>
-          </View>
-        </View>
-
-        <Text style={styles.sectionTitle}>Quilometragem</Text>
-        <View style={styles.mileageCard}>
-          <View style={styles.mileageHeader}>
-            <View>
-              <Text style={styles.mileageLabel}>KM atual</Text>
-              <Text style={styles.mileageValue}>{data.mileage.current}</Text>
-            </View>
-            <View>
-              <Text style={[styles.mileageLabel, { textAlign: "right" }]}>Ultima atualização</Text>
-              <Text style={styles.mileageUpdateValue}>{data.mileage.lastUpdate}</Text>
-            </View>
-          </View>
-          <View style={styles.mileageButtonContainer}>
-            <Button
-              title="Atualizar agora"
-              onPress={handleUpdateMileage}
-              textStyle={{ fontSize: 12, paddingHorizontal: 16 }}
-            />
+            <Text style={[styles.healthLabel, styles.healthLabelAvg]}>Custo médio</Text>
           </View>
         </View>
 
         <Text style={styles.sectionTitle}>Histórico de lançamentos</Text>
         <View style={styles.historyCard}>
-          {data.history.map((item: any) => (
-            <View key={item.id} style={styles.historyItem}>
-              <View
-                style={[
-                  styles.historyIndicator,
-                  item.type === "danger" && styles.historyIndicatorDanger,
-                  item.type === "warning" && styles.historyIndicatorWarning,
-                  item.type === "info" && styles.historyIndicatorInfo,
-                ]}
-              />
-              <View style={styles.historyContent}>
-                <Text style={styles.historyTitle}>{item.title}</Text>
-                <Text style={styles.historyDetails}>{item.details}</Text>
+          {historyList.length === 0 ? (
+            <Text style={{ color: "#74839D", textAlign: "center" }}>Nenhum lançamento encontrado.</Text>
+          ) : (
+            historyList.map((item: any) => (
+              <View key={item.id || item.dataManutencao} style={styles.historyItem}>
+                <View style={[styles.historyIndicator, styles.historyIndicatorInfo]} />
+                <View style={styles.historyContent}>
+                  <Text style={styles.historyTitle}>{item.descricao}</Text>
+                  <Text style={styles.historyDetails}>R$ {item.valor}</Text>
+                </View>
+                <Text style={[styles.historyKm, styles.historyKmInfo]}>{item.dataManutencao}</Text>
               </View>
-              <Text
-                style={[
-                  styles.historyKm,
-                  item.type === "danger" && styles.historyKmDanger,
-                  item.type === "warning" && styles.historyKmWarning,
-                  item.type === "info" && styles.historyKmInfo,
-                ]}
-              >
-                {item.km}
-              </Text>
-            </View>
-          ))}
-          <View style={styles.pagination}>
-            <TouchableOpacity style={styles.paginationButton}>
-              <Text style={styles.paginationText}>Anterior</Text>
-            </TouchableOpacity>
-            <Text style={styles.paginationText}>1-3 de 6</Text>
-            <TouchableOpacity style={styles.paginationButton}>
-              <Text style={styles.paginationText}>Próximo</Text>
-            </TouchableOpacity>
-          </View>
+            ))
+          )}
         </View>
 
         <View style={styles.footerButtons}>
           <TouchableOpacity
             style={styles.outlineButton}
-            onPress={handleRegisterDocumentation}
+            onPress={() => setIsDocModalVisible(true)}
             activeOpacity={0.7}
           >
             <Text style={styles.outlineButtonText}>+ Registrar documentação</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.outlineButton}
-            onPress={handleRegisterMaintenance}
+            onPress={() => setIsMaintenanceModalVisible(true)}
             activeOpacity={0.7}
           >
             <Text style={styles.outlineButtonText}>+ registrar manutenção</Text>
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* Renderização Condicional dos Modais */}
+      <MaintenanceModal 
+        visible={isMaintenanceModalVisible} 
+        onClose={() => setIsMaintenanceModalVisible(false)} 
+        onSuccess={refreshData}
+        vehicleId={vehicleData.id || 1}
+      />
+
+      <DocumentationModal 
+        visible={isDocModalVisible} 
+        onClose={() => setIsDocModalVisible(false)} 
+        onSuccess={refreshData}
+        userId={vehicleData.idUsuario || 1}
+      />
     </Container>
   );
 }

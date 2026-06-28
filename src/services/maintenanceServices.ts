@@ -1,44 +1,31 @@
-export async function getMaintenanceData() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        vehicle: {
-          name: "Hyundai HB20",
-          details: "HBX-2J19 - 280.00 KM",
-        },
-        health: {
-          preventive: 8,
-          corrective: 8,
-          avgKm: "5.000",
-        },
-        mileage: {
-          current: "85.420 km",
-          lastUpdate: "4 dias atrás",
-        },
-        history: [
-          {
-            id: "1",
-            title: "Revisão de freios",
-            details: "R$ xxxxx - 30/08/2025",
-            km: "xxxxx km",
-            type: "danger",
-          },
-          {
-            id: "2",
-            title: "Troca correia dentada",
-            details: "R$ xxxx - 24/03/2018",
-            km: "2.580 km",
-            type: "warning",
-          },
-          {
-            id: "3",
-            title: "Revisão bateria",
-            details: "R$ xxxx",
-            km: "2.580 km",
-            type: "info",
-          },
-        ],
-      });
-    }, 1000);
+import { API_CONFIG } from "@/config/api";
+
+export async function getVehicleMaintenanceInfo() {
+  const response = await fetch(`${API_CONFIG.baseURL}/veiculo/informacoes-manutencao`);
+  if (!response.ok) throw new Error("Erro ao buscar informações de manutenção.");
+  return response.json();
+}
+
+export async function getMaintenancesList(page = 0, size = 10) {
+  const response = await fetch(`${API_CONFIG.baseURL}/manutencao?page=${page}&size=${size}`);
+  if (!response.ok) throw new Error("Erro ao buscar lista de manutenções.");
+  return response.json();
+}
+
+export async function createMaintenance(data: { tipo: string; dataManutencao: string; descricao: string; idVeiculo: number; valor: number }) {
+  const response = await fetch(`${API_CONFIG.baseURL}/manutencao`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
   });
+  if (!response.ok) throw new Error("Erro ao criar manutenção.");
+}
+
+export async function createDocumentation(data: { tipo: string; valor: number; dataVencimento: string; dataPagamento: string; descricao: string }) {
+  const response = await fetch(`${API_CONFIG.baseURL}/custo`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error("Erro ao criar custo/documentação.");
 }
