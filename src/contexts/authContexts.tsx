@@ -1,6 +1,6 @@
 import { AuthContextData, User } from "@/types/auth";
 import React, { createContext, ReactNode, useState } from "react";
-import { login } from "../services/authServices";
+import { login, logout } from "../services/authServices";
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
@@ -12,12 +12,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(response);
   }
 
-  function signOut() {
+  async function signOut() {
+    await logout();
     setUser(null);
   }
 
+  function updateUser(data: Partial<User>) {
+    setUser(prev => prev ? { ...prev, ...data } : null);
+  }
+
   return (
-    <AuthContext.Provider value={{ signed: !!user, user, signIn, signOut }}>
+    <AuthContext.Provider value={{ signed: !!user, user, signIn, signOut, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

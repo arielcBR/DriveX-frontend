@@ -2,7 +2,6 @@ import { API_CONFIG } from "../config/api";
 
 export interface LoginResponse {
   id: number;
-  name: string;
   email: string;
   telefone?: string;
   nome: string;
@@ -58,5 +57,16 @@ export async function login(email: string, password: string): Promise<LoginRespo
   } catch (error: any) {
     console.error("Erro no login:", error);
     throw error;
+  }
+}
+
+export async function logout(): Promise<void> {
+  try {
+    await fetch(`${API_CONFIG.baseURL}/logout`, {
+      method: "POST",
+      credentials: "include"
+    });
+  } catch (error) {
+    console.error("Erro no logout:", error);
   }
 }

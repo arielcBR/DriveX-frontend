@@ -2,13 +2,53 @@ import { Button } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { colors } from "@/constants/theme";
 import { router } from "expo-router";
-import React, { useState } from "react";
-import { Switch, Text, TouchableOpacity, View } from "react-native";
+import React, { useState, useEffect } from "react";
+import { Switch, Text, TouchableOpacity, View, Alert } from "react-native";
+import { useAuth } from "@/hooks/useAuth";
+import { updateNotifications } from "@/services/userServices";
+import { getInitials } from "@/utils/stringUtils";
 import { styles } from "./styles";
 
 export function Profile() {
-  const [alertVencimento, setAlertVencimento] = useState(true);
-  const [manutencaoKm, setManutencaoKm] = useState(false);
+  const { user, signOut, updateUser } = useAuth();
+  const [alertVencimento, setAlertVencimento] = useState(user?.notificacaoVencimento ?? true);
+  const [manutencaoKm, setManutencaoKm] = useState(user?.notificacaoManutencao ?? false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setAlertVencimento(user.notificacaoVencimento ?? true);
+      setManutencaoKm(user.notificacaoManutencao ?? false);
+    }
+  }, [user]);
+
+  const handleToggleVencimento = async (value: boolean) => {
+    setAlertVencimento(value);
+    try {
+      setLoading(true);
+      await updateNotifications({ notificacao: "Vencimento" });
+      updateUser({ notificacaoVencimento: value });
+    } catch (error: any) {
+      setAlertVencimento(!value);
+      Alert.alert("Erro", error.message || "Não foi possível atualizar as notificações.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleToggleManutencao = async (value: boolean) => {
+    setManutencaoKm(value);
+    try {
+      setLoading(true);
+      await updateNotifications({ notificacao: "Manutenção" });
+      updateUser({ notificacaoManutencao: value });
+    } catch (error: any) {
+      setManutencaoKm(!value);
+      Alert.alert("Erro", error.message || "Não foi possível atualizar as notificações.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Container>
@@ -25,7 +65,7 @@ export function Profile() {
 
       <View style={styles.avatarContainer}>
         <View style={styles.avatar}>
-          <Text style={styles.avatarText}>RR</Text>
+          <Text style={styles.avatarText}>{getInitials(user?.nome || "Usuário")}</Text>
         </View>
       </View>
 
@@ -34,17 +74,17 @@ export function Profile() {
         
         <View style={styles.infoRow}>
           <Text style={styles.label}>Nome completo</Text>
-          <Text style={styles.value}>Rodrigo Remor</Text>
+          <Text style={styles.value}>{user?.nome || "-"}</Text>
         </View>
         
         <View style={styles.infoRow}>
           <Text style={styles.label}>E-mail</Text>
-          <Text style={styles.value}>rodrigo@gmail.com</Text>
+          <Text style={styles.value}>{user?.email || "-"}</Text>
         </View>
         
         <View style={styles.infoRow}>
           <Text style={styles.label}>Telefone</Text>
-          <Text style={styles.value}>(11) 99999-9999</Text>
+          <Text style={styles.value}>{user?.telefone || "-"}</Text>
         </View>
       </View>
 
@@ -55,7 +95,8 @@ export function Profile() {
           <Text style={styles.switchLabel}>Alertas de vencimento</Text>
           <Switch
             value={alertVencimento}
-            onValueChange={setAlertVencimento}
+            onValueChange={handleToggleVencimento}
+            disabled={loading}
             trackColor={{ false: colors['blue--600'], true: colors['green--500'] }}
             thumbColor={colors.white}
           />
@@ -65,7 +106,8 @@ export function Profile() {
           <Text style={styles.switchLabel}>Manutenção por km</Text>
           <Switch
             value={manutencaoKm}
-            onValueChange={setManutencaoKm}
+            onValueChange={handleToggleManutencao}
+            disabled={loading}
             trackColor={{ false: colors['blue--600'], true: colors['green--500'] }}
             thumbColor={colors.white}
           />
@@ -81,7 +123,10 @@ export function Profile() {
       </View>
 
       <View style={styles.buttonWrapper}>
-        <Button variant="danger" title="Sair da conta" />
+        <Button variant="danger" title="Sair da conta" onPress={() => {
+          signOut();
+          router.replace("/sign-in");
+        }} />
       </View>
     </Container>
   );
