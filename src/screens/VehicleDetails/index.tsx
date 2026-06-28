@@ -39,9 +39,7 @@ export function VehicleDetails() {
     );
   }
 
-  const handleEdit = () => {
-    Alert.alert("Em breve", "A edição de veículo será implementada em breve.");
-  };
+
 
   const formatNumber = (num: number) => {
     return num.toLocaleString('pt-BR');
@@ -183,10 +181,7 @@ export function VehicleDetails() {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.editButton} onPress={handleEdit}>
-          <Text style={styles.editButtonText}>Editar dados</Text>
-          <MaterialIcons name="edit" size={16} color={colors["green--500"]} />
-        </TouchableOpacity>
+
         
       </View>
     </Container>

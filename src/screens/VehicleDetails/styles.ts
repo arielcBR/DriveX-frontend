@@ -172,19 +172,7 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 2,
   },
-  editButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    marginBottom: 20,
-  },
-  editButtonText: {
-    color: colors["blue--300"],
-    fontFamily: fonts.medium,
-    fontSize: 14,
-    marginRight: 8,
-  },
+
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
