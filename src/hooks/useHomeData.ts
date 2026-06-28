@@ -1,7 +1,7 @@
 import { fetchHomeData } from "@/services/homeServices";
 import { HomeData } from "@/types/home";
-import { useState, useCallback } from "react";
 import { useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 
 export function useHomeData() {
   const [data, setData] = useState<HomeData | null>(null);
@@ -18,9 +18,9 @@ export function useHomeData() {
 
   useFocusEffect(
     useCallback(() => {
-      // If we already have data, fetch silently so we don't flash the loading spinner
+      // Se já tem data, não utiliza tela de loading
       fetchData(data !== null);
-    }, [data !== null])
+    }, [data !== null]),
   );
 
   return { data, loading, error, refetch: fetchData };

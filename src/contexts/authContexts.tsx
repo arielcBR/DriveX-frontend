@@ -1,6 +1,6 @@
 import { AuthContextData, User } from "@/types/auth";
 import React, { createContext, ReactNode, useState } from "react";
-import { login } from "../services/authServices";
+import { login, logout } from "../services/authServices";
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
@@ -12,7 +12,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(response);
   }
 
-  function signOut() {
+  async function signOut() {
+    await logout();
     setUser(null);
   }
 

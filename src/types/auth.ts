@@ -12,6 +12,6 @@ export interface AuthContextData {
   user: User | null;
   signed: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signOut: () => void;
+  signOut: () => Promise<void>;
   updateUser: (data: Partial<User>) => void;
 }
