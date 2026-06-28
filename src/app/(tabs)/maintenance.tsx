@@ -1,5 +1,5 @@
-import { Reports } from "@/screens/Reports";
+import { Maintenance } from "@/screens/Maintenance";
 
 export default function MaintenanceRoute() {
-  return <Reports />;
+  return <Maintenance />;
 }
