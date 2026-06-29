@@ -1,4 +1,5 @@
 import { NotificationPanel } from "@/components/NotificationPanel";
+import { usePendencias } from "@/hooks/usePendencias";
 import { colors, sizes } from "@/constants/theme";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
@@ -8,8 +9,14 @@ import { styles } from "./styles";
 import { HeaderProps } from "./types";
 
 export function Header({ initials }: HeaderProps) {
-  const [isNotificationPanelVisible, setIsNotificationPanelVisible] =
-    useState(false);
+  const [isNotificationPanelVisible, setIsNotificationPanelVisible] = useState(false);
+  const { data: pendencias } = usePendencias(true);
+
+  const hasNotifications = pendencias && (
+    pendencias.kmDesatualizado || 
+    pendencias.manutencaoKmVencido || 
+    pendencias.manutencaoTempoVencido
+  );
 
   return (
     <View style={styles.header}>
@@ -34,7 +41,7 @@ export function Header({ initials }: HeaderProps) {
           style={styles.iconButton}
           onPress={() => setIsNotificationPanelVisible(true)}
         >
-          <View style={styles.notificationDot} />
+          {hasNotifications && <View style={styles.notificationDot} />}
           <MaterialIcons
             name="notifications-none"
             size={sizes.icon_medium}
