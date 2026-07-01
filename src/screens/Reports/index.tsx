@@ -1,16 +1,15 @@
-import React from "react";
-import { View, Text, ScrollView } from "react-native";
 import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
-import { VehicleCard } from "./components/VehicleCard";
-import { SummaryBoxes } from "./components/SummaryBoxes";
-import { InterventionsList } from "./components/Interventions";
-import { ExportSection } from "./components/ExportSection";
-import { styles } from "./styles";
-import { useVehicleData } from "@/hooks/useVehicleData";
-import { useReportsData } from "@/hooks/useReportsData";
-import { ActivityIndicator } from "react-native";
 import { colors } from "@/constants/theme";
+import { useReportsData } from "@/hooks/useReportsData";
+import { useVehicleData } from "@/hooks/useVehicleData";
+import React from "react";
+import { ActivityIndicator, Text, View } from "react-native";
+import { ExportSection } from "./components/ExportSection";
+import { InterventionsList } from "./components/Interventions";
+import { SummaryBoxes } from "./components/SummaryBoxes";
+import { VehicleCard } from "./components/VehicleCard";
+import { styles } from "./styles";
 
 export function Reports() {
   const { data: vehicleData, loading: vehicleLoading } = useVehicleData();
@@ -19,38 +18,41 @@ export function Reports() {
   if (vehicleLoading || reportsLoading) {
     return (
       <Container>
-        <View style={[styles.content, { justifyContent: 'center', alignItems: 'center' }]}>
+        <View style={[styles.content, { justifyContent: 'center', alignItems: 'center', flex: 1 }]}>
           <ActivityIndicator size="large" color={colors["green--500"]} />
         </View>
       </Container>
     );
   }
 
+  const proximaRevisao = vehicleData?.kmAtual != null 
+    ? Math.ceil((vehicleData.kmAtual + 1) / 10000) * 10000 
+    : 0;
+
   return (
     <Container>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.content}>
-          <Header initials="RR" />
+      <View style={styles.content}>
+        <Header initials="RR" />
 
-          <View style={styles.sectionsWrapper}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Ficha técnica do veículo</Text>
-              <VehicleCard data={vehicleData} />
-              <SummaryBoxes data={infoManutencao} />
-            </View>
+        <View style={styles.sectionsWrapper}>
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Ficha técnica do veículo</Text>
+            
+            <VehicleCard data={vehicleData} proximaRevisao={proximaRevisao} />
+            <SummaryBoxes data={infoManutencao} proximaRevisao={proximaRevisao} />
+          </View>
 
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Últimas manutenções</Text>
-              <InterventionsList data={manutencoes?.content || []} />
-            </View>
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Últimas manutenções</Text>
+            <InterventionsList data={manutencoes?.content || []} />
+          </View>
 
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Exportar relatórios</Text>
-              <ExportSection />
-            </View>
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Exportar relatórios</Text>
+            <ExportSection />
           </View>
         </View>
-      </ScrollView>
+      </View>
     </Container>
   );
 }

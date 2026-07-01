@@ -5,7 +5,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
 import { VehicleCardProps } from "./types";
 
-export function VehicleCard({ data }: VehicleCardProps) {
+export function VehicleCard({ data, proximaRevisao }: VehicleCardProps) {
   const [showTooltip, setShowTooltip] = useState(false);
 
   if (!data) return null;
@@ -46,7 +46,7 @@ export function VehicleCard({ data }: VehicleCardProps) {
           <View style={styles.fieldInfo}>
             <Text style={styles.fieldLabel}>Próxima revisão</Text>
             <View style={styles.rowBetween}>
-              <Text style={styles.fieldValueDanger}>{data.proximaManutencaoKm.toLocaleString('pt-BR')} km</Text>
+              <Text style={styles.fieldValueDanger}>{proximaRevisao.toLocaleString('pt-BR')} km</Text>
               <TouchableOpacity onPress={() => setShowTooltip(!showTooltip)}>
                 <MaterialIcons name="info-outline" size={24} color={colors.white} />
               </TouchableOpacity>

@@ -1,5 +1,8 @@
-import { InformacoesManutencaoVeiculoResponse } from "@/services/reportsServices";
-
 export interface SummaryBoxesProps {
-    data?: InformacoesManutencaoVeiculoResponse | null;
+  data: {
+    totalManutencoesPreventivas: number;
+    totalManutencoesCorretivas: number;
+    valorTotalPreventivas: number;
+  } | null;
+  proximaRevisao: number;
 }

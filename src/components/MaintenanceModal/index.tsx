@@ -1,6 +1,7 @@
 import { colors } from "@/constants/theme";
 import { createMaintenance } from "@/services/maintenanceServices";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import React, { useState } from "react";
 import { ActivityIndicator, Modal, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
@@ -14,12 +15,43 @@ export function MaintenanceModal({ visible, onClose, onSuccess, vehicleId }: Mai
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  // Estados do Calendário
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
   const handleClose = () => {
     setValor("");
     setDataManutencao("");
     setDescricao("");
     setErrorMsg(null);
+    setShowDatePicker(false);
     onClose();
+  };
+
+  // Função da Máscara BRL (Tarefa 3)
+  const handleValorChange = (text: string) => {
+    const digits = text.replace(/\D/g, "");
+    if (!digits) {
+      setValor("");
+      return;
+    }
+    const num = (parseInt(digits, 10) / 100).toFixed(2);
+    const parts = num.split(".");
+    const reais = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    const centavos = parts[1];
+    setValor(`${reais},${centavos}`);
+  };
+
+  // Função do Calendário (Tarefa 2)
+  const onDateChange = (event: any, selectedDate?: Date) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      setDate(selectedDate);
+      const dia = String(selectedDate.getDate()).padStart(2, "0");
+      const mes = String(selectedDate.getMonth() + 1).padStart(2, "0");
+      const ano = selectedDate.getFullYear();
+      setDataManutencao(`${dia}/${mes}/${ano}`);
+    }
   };
 
   const handleConfirm = async () => {
@@ -31,7 +63,7 @@ export function MaintenanceModal({ visible, onClose, onSuccess, vehicleId }: Mai
 
     const [dia, mes, ano] = dataManutencao.split("/");
     const formatadaParaBanco = `${ano}-${mes}-${dia}`;
-    const valorNumerico = parseFloat(valor.replace(",", "."));
+    const valorNumerico = parseFloat(valor.replace(/\./g, "").replace(",", "."));
 
     try {
       setIsLoading(true);
@@ -86,21 +118,30 @@ export function MaintenanceModal({ visible, onClose, onSuccess, vehicleId }: Mai
             <TextInput
               style={styles.textInput}
               keyboardType="numeric"
+              placeholder="0,00"
+              placeholderTextColor={colors["blue--300"]}
               value={valor}
-              onChangeText={setValor}
+              onChangeText={handleValorChange}
             />
           </View>
 
           <View style={styles.labelRow}>
             <Text style={styles.labelText}>Data da manutenção</Text>
-            <TextInput
-              style={styles.dateInput}
-              placeholder="DD/MM/AAAA"
-              placeholderTextColor={colors["blue--300"]}
-              value={dataManutencao}
-              onChangeText={setDataManutencao}
-            />
+            <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+              <Text style={[styles.dateInput, !dataManutencao && { color: colors["blue--300"] }]}>
+                {dataManutencao || "Selecionar data"}
+              </Text>
+            </TouchableOpacity>
           </View>
+
+          {showDatePicker && (
+            <DateTimePicker
+              value={date}
+              mode="date"
+              display="default"
+              onChange={onDateChange}
+            />
+          )}
 
           <View style={[styles.inputContainer, styles.textAreaContainer]}>
             <TextInput

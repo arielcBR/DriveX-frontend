@@ -1,10 +1,9 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { Text, View } from "react-native";
 import { styles } from "./styles";
-import { colors } from "@/constants/theme";
 import { SummaryBoxesProps } from "./types";
 
-export function SummaryBoxes({ data }: SummaryBoxesProps) {
+export function SummaryBoxes({ data, proximaRevisao }: SummaryBoxesProps) {
   if (!data) return null;
 
   return (

@@ -1,4 +1,4 @@
-import { colors, fonts } from "@/constants/theme";
+import { fonts } from "@/constants/theme";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     padding: 12,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#161B19", // Dark background based on image
+    backgroundColor: "#161B19", 
     height: 80,
   },
   value: {

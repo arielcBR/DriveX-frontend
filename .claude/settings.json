@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__github-concur__get_current_user",
+      "mcp__github-tools__get_current_user",
+      "mcp__github-wdf__get_current_user",
+      "mcp__sap-outlook__outlook_list_folders",
+      "mcp__sap-auth-mcp__sap_make_request"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\I776401"
+    ]
+  }
+}
